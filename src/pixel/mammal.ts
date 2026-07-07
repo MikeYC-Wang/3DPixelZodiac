@@ -7,7 +7,7 @@
  * they are drawn deliberately large/high-contrast so they stay readable
  * at the sprite's final on-screen size.
  */
-import { Grid, createGrid, fillEllipse, fillRect, fillWedge, setPixel } from "./grid";
+import { Grid, createGrid, fillEllipse, fillRect, setPixel } from "./grid";
 
 export const GRID_W = 32;
 export const GRID_H = 26;
@@ -81,6 +81,31 @@ export function buildMammalBody(opts: MammalOptions): Grid {
   return grid;
 }
 
+/**
+ * Draws one triangular ear as 4 explicit stacked rects tapering to a point - deliberately not using
+ * the generic `fillWedge` helper, which produces a distorted spike ("unicorn horn") at these larger
+ * ear sizes. `leanToward` bends the tip left/right so a left/right ear pair angles in toward center.
+ */
+function drawTaperedEar(
+  grid: Grid,
+  baseX: number,
+  baseY: number,
+  width: number,
+  height: number,
+  color: string,
+  leanToward: "left" | "right"
+): void {
+  const rows = 4;
+  const rowH = height / rows;
+  for (let i = 0; i < rows; i++) {
+    const t = i / (rows - 1);
+    const rowW = Math.max(0.5, width * (1 - t * 0.85));
+    const rowY = baseY + height - (i + 1) * rowH;
+    const offset = leanToward === "right" ? width - rowW : 0;
+    fillRect(grid, baseX + offset, rowY, rowW, rowH + 0.1, color);
+  }
+}
+
 function drawEars(
   grid: Grid,
   style: MammalOptions["earStyle"],
@@ -101,17 +126,17 @@ function drawEars(
       break;
     case "small-pointed":
       // pig: small triangular ears close to the head
-      fillWedge(grid, HEAD.cx - 2.5, top + 3, 2.2, 3, earColor, "up-right");
-      fillWedge(grid, HEAD.cx + 2.8, top + 2.5, 2.2, 3, earColor, "up-left");
+      drawTaperedEar(grid, HEAD.cx - 2.7, top + 3, 2.2, 3, earColor, "right");
+      drawTaperedEar(grid, HEAD.cx + 2.6, top + 2.5, 2.2, 3, earColor, "left");
       break;
     case "small-tuft":
       // ox/cow: two tiny dark spiky tufts on top of the head, not full horns
-      fillWedge(grid, HEAD.cx - 1.6, top + 3.5, 1.4, 2.2, hornColor, "up-right");
-      fillWedge(grid, HEAD.cx + 1.4, top + 3.2, 1.4, 2.2, hornColor, "up-left");
+      drawTaperedEar(grid, HEAD.cx - 1.6, top + 3.5, 1.4, 2.2, hornColor, "right");
+      drawTaperedEar(grid, HEAD.cx + 1.4, top + 3.2, 1.4, 2.2, hornColor, "left");
       break;
     case "pointy":
-      fillWedge(grid, HEAD.cx - 4, top, 3.5, 6, earColor, "up-right");
-      fillWedge(grid, HEAD.cx + 2.5, top, 3.5, 6, earColor, "up-left");
+      drawTaperedEar(grid, HEAD.cx - 4.2, top, 3.4, 6, earColor, "right");
+      drawTaperedEar(grid, HEAD.cx + 0.8, top, 3.4, 6, earColor, "left");
       break;
     case "long":
       // rabbit: white outer ear stays clearly visible with a narrower pink inner-ear stripe

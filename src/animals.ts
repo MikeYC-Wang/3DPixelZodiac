@@ -85,9 +85,9 @@ export const ANIMALS: AnimalSpec[] = [
     legRig: { frontX: 20, backX: 9, pawColor: "#ffffff" },
     buildBody: () =>
       buildMammalBody({
-        // dairy cow: white coat with black Holstein-style patches
+        // dairy cow: white coat with black Holstein-style patches, pink nose only (not a pink head)
         bodyColor: "#faf7f2",
-        headColor: "#f0c9b8",
+        headColor: "#faf7f2",
         bellyColor: "#ffffff",
         snoutColor: "#f0c9b8",
         eyeColor: "#141116",
@@ -161,18 +161,25 @@ export const ANIMALS: AnimalSpec[] = [
       ];
       drawSerpentTube(grid, points, "#2f9e5f");
       const head = points[0];
+      const neck1 = points[1];
+      const neck2 = points[2];
+      // spine spikes running from the head back down the neck, for a fiercer silhouette
+      fillRect(grid, neck1.x - 0.7, neck1.y - neck1.r - 1.8, 1.3, 2.4, "#e8c94b");
+      fillRect(grid, neck2.x - 0.6, neck2.y - neck2.r - 1.5, 1.1, 2, "#e8c94b");
       // two thick curved horns, each a wide base + back-swept tip so they read clearly as horns
       fillRect(grid, head.x - 2.6, head.y - 7, 2, 3.6, "#e8c94b");
       fillRect(grid, head.x - 3.8, head.y - 8.6, 2, 2.2, "#e8c94b");
       fillRect(grid, head.x + 0.6, head.y - 7, 2, 3.6, "#e8c94b");
       fillRect(grid, head.x + 1.8, head.y - 8.6, 2, 2.2, "#e8c94b");
-      // brow ridge above the eye, for a bit more face definition
-      fillRect(grid, head.x - 1.5, head.y - 2.4, 2.4, 0.9, "#1f7a46");
-      // snout + jaw + a single trailing whisker
+      // angled fierce brow above the eye
+      fillRect(grid, head.x - 2, head.y - 2.7, 3, 1, "#12240f");
+      // snout + jaw + fang + a single trailing whisker
       fillEllipse(grid, head.x + 3.2, head.y + 1, 1.8, 1.5, "#2f9e5f");
       fillRect(grid, head.x + 3, head.y + 2.1, 2.4, 1, "#e8c94b");
+      fillRect(grid, head.x + 4.6, head.y + 2.6, 0.8, 1.1, "#fff3df");
       fillRect(grid, head.x + 3.8, head.y + 3.2, 3.2, 0.8, "#e8c94b");
-      setPixel(grid, head.x, head.y - 1.5, "#141116");
+      fillEllipse(grid, head.x, head.y - 1.4, 0.9, 0.9, "#c0392b");
+      setPixel(grid, head.x, head.y - 1.4, "#141116");
       return grid;
     },
   },
@@ -198,10 +205,14 @@ export const ANIMALS: AnimalSpec[] = [
       drawSerpentTube(grid, points, "#4c9a3f");
       drawSerpentMarkings(grid, points, "#e8e2a0", 4);
       const head = points[0];
-      // forked tongue
+      // cobra-style hood flare behind the head, for a fiercer silhouette
+      fillEllipse(grid, head.x - 1.2, head.y, 2.6, 3.3, "#4c9a3f");
+      fillEllipseMasked(grid, head.x - 1.2, head.y, 2.4, 3, "#3f8a34", ["#4c9a3f"]);
+      // forked tongue + small fangs
       fillRect(grid, head.x + 2, head.y, 2.6, 0.8, "#c0392b");
       fillRect(grid, head.x + 4.2, head.y - 0.5, 0.9, 0.6, "#c0392b");
       fillRect(grid, head.x + 4.2, head.y + 0.7, 0.9, 0.6, "#c0392b");
+      fillRect(grid, head.x + 1.6, head.y + 1.1, 0.6, 0.9, "#fff8e0");
       setPixel(grid, head.x + 0.5, head.y - 1.3, "#141116");
       fillRect(grid, head.x - 1.5, head.y - 1.8, 1.8, 1, "#d9e8a8");
       return grid;
@@ -386,6 +397,11 @@ function buildTigerBody(): Grid {
   fillRect(grid, 10.8, 9.8, 1.1, 2.2, stripe);
   fillRect(grid, 20.1, 9.8, 1.1, 2.2, stripe);
   fillRect(grid, 15.2, 10.4, 1.6, 1.2, stripe);
+  // fangs peeking out from the muzzle, and angled fierce brows above each eye
+  fillRect(grid, 13.6, 12.6, 0.9, 1.3, white);
+  fillRect(grid, 17.5, 12.6, 0.9, 1.3, white);
+  fillRect(grid, 12, 6.6, 2, 0.9, stripe);
+  fillRect(grid, 18, 6.6, 2, 0.9, stripe);
   setPixel(grid, 12.8, 7.6, "#141116");
   setPixel(grid, 19.2, 7.6, "#141116");
   return grid;

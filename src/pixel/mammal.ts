@@ -125,15 +125,18 @@ function drawEars(
       fillEllipse(grid, HEAD.cx + 4.5, top + 2.5, 2.8, 3, earColor);
       break;
     case "small-pointed":
-      // pig: small triangular ears close to the head
-      drawTaperedEar(grid, HEAD.cx - 2.7, top + 3, 2.2, 3, earColor, "right");
-      drawTaperedEar(grid, HEAD.cx + 2.6, top + 2.5, 2.2, 3, earColor, "left");
+      // pig: small round ears close to the head
+      fillEllipse(grid, HEAD.cx - 2.2, top + 4, 1.7, 1.9, earColor);
+      fillEllipse(grid, HEAD.cx + 3.3, top + 3.6, 1.7, 1.9, earColor);
       break;
-    case "small-tuft":
-      // ox/cow: two tiny dark spiky tufts on top of the head, not full horns
-      drawTaperedEar(grid, HEAD.cx - 1.6, top + 3.5, 1.4, 2.2, hornColor, "right");
-      drawTaperedEar(grid, HEAD.cx + 1.4, top + 3.2, 1.4, 2.2, hornColor, "left");
+    case "small-tuft": {
+      // ox/cow: two small pointy horns poking up clearly above the top of the head
+      const hbx = HEAD.cx - 2.2;
+      const hby = top + 0.5;
+      drawTaperedEar(grid, hbx, hby, 1.7, 4.2, hornColor, "right");
+      drawTaperedEar(grid, hbx + 3.2, hby, 1.7, 4.2, hornColor, "left");
       break;
+    }
     case "pointy":
       drawTaperedEar(grid, HEAD.cx - 4.2, top, 3.4, 6, earColor, "right");
       drawTaperedEar(grid, HEAD.cx + 0.8, top, 3.4, 6, earColor, "left");

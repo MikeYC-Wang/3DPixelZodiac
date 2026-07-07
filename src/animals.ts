@@ -22,6 +22,7 @@ export interface LegRigOverride {
   groundY?: number;
   length?: number;
   width?: number;
+  pawColor?: string;
 }
 
 export interface AnimalSpec {
@@ -73,23 +74,26 @@ export const ANIMALS: AnimalSpec[] = [
     key: "ox",
     order: 1,
     name: { zh: "牛", en: "Ox", ja: "ウシ", ko: "소" },
-    palette: { outline: "#20140a", body: "#7d5330", belly: "#c99a63", accent: "#f0e9d6", eye: "#141116" },
+    palette: { outline: "#241a10", body: "#8a5a3a", belly: "#e8c9a0", accent: "#f0c9b8", eye: "#141116" },
     locomotion: "walk",
+    legRig: { frontX: 20, backX: 9, pawColor: "#e8c9a0" },
     buildBody: () =>
       buildMammalBody({
-        bodyColor: "#7d5330",
-        bellyColor: "#c99a63",
-        snoutColor: "#4a3626",
+        bodyColor: "#8a5a3a",
+        headColor: "#f0c9b8",
+        bellyColor: "#e8c9a0",
+        snoutColor: "#f0c9b8",
         eyeColor: "#141116",
-        earStyle: "horns-curved",
-        hornColor: "#f0e9d6",
-        drawHeadExtras: (grid) => {
-          // nose ring
-          setPixel(grid, 29, 13.5, "#f0e9d6");
-        },
+        earStyle: "small-tuft",
+        hornColor: "#2a1a10",
         drawTail: (grid) => {
-          fillRect(grid, 3, 15, 3, 1, "#7d5330");
-          fillEllipse(grid, 2, 17, 1.3, 1.3, "#241a10");
+          const pts: SerpentPoint[] = [
+            { x: 4.5, y: 15.5, r: 0.7 },
+            { x: 3, y: 17.5, r: 0.6 },
+            { x: 2.4, y: 19.5, r: 0.6 },
+          ];
+          drawSerpentTube(grid, pts, "#8a5a3a");
+          fillEllipse(grid, 2, 20.3, 0.9, 0.9, "#2a1a10");
         },
       }),
   },
@@ -99,6 +103,7 @@ export const ANIMALS: AnimalSpec[] = [
     name: { zh: "虎", en: "Tiger", ja: "トラ", ko: "호랑이" },
     palette: { outline: "#241206", body: "#f0821e", belly: "#fff3df", accent: "#000000", eye: "#141116" },
     locomotion: "walk",
+    legRig: { frontX: 20, backX: 9, pawColor: "#fff3df" },
     buildBody: () =>
       buildMammalBody({
         bodyColor: "#f0821e",
@@ -225,13 +230,6 @@ export const ANIMALS: AnimalSpec[] = [
         bellyColor: "#e8c79a",
         eyeColor: "#141116",
         earStyle: "pointy",
-        drawHeadExtras: (grid) => {
-          // flowing mane running down the neck, tapering as it goes
-          fillRect(grid, 17.5, 4, 9.5, 2, "#3b2412");
-          fillRect(grid, 16.5, 6, 3, 2.2, "#3b2412");
-          fillRect(grid, 16, 8.2, 2.6, 2.2, "#3b2412");
-          fillRect(grid, 15.5, 10.4, 2.2, 2, "#3b2412");
-        },
         drawTail: (grid) => {
           fillRect(grid, 1.5, 12, 2.6, 5, "#3b2412");
           fillRect(grid, 1, 16.5, 2.2, 5, "#3b2412");

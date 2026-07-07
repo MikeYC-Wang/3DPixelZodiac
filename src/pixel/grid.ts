@@ -6,20 +6,34 @@
  * ears, markings, ...) and then run through `outlineGrid`, which grows a
  * 1px outline ring around the silhouette automatically - this keeps each
  * animal's source short while still producing a clean retro outlined look.
+ *
+ * All shape-drawing functions take coordinates in "logical" cell units (the
+ * same units used throughout mammal.ts/animals.ts), but internally rasterize
+ * at `SCALE`x that resolution - this makes curved edges (ellipses) and the
+ * auto-generated outline noticeably crisper/more detailed without requiring
+ * every animal's hand-authored coordinates to be rewritten.
  */
 
 export type Grid = (string | null)[][];
 
+export const SCALE = 2;
+
 export function createGrid(width: number, height: number): Grid {
-  return Array.from({ length: height }, () => Array<string | null>(width).fill(null));
+  return Array.from({ length: height * SCALE }, () => Array<string | null>(width * SCALE).fill(null));
 }
 
 export function inBounds(grid: Grid, x: number, y: number): boolean {
   return y >= 0 && y < grid.length && x >= 0 && x < grid[0].length;
 }
 
+/** Sets a single raw (already-scaled) cell. */
+function setRaw(grid: Grid, x: number, y: number, color: string): void {
+  if (inBounds(grid, x, y)) grid[y][x] = color;
+}
+
+/** Sets one logical pixel (fills the full SCALE x SCALE block it maps to). */
 export function setPixel(grid: Grid, x: number, y: number, color: string): void {
-  if (inBounds(grid, x, y)) grid[Math.round(y)][Math.round(x)] = color;
+  fillRect(grid, x, y, 1, 1, color);
 }
 
 export function fillRect(
@@ -30,14 +44,18 @@ export function fillRect(
   h: number,
   color: string
 ): void {
-  for (let dy = 0; dy < h; dy++) {
-    for (let dx = 0; dx < w; dx++) {
-      setPixel(grid, x + dx, y + dy, color);
+  const sx = Math.round(x * SCALE);
+  const sy = Math.round(y * SCALE);
+  const sw = Math.max(1, Math.round(w * SCALE));
+  const sh = Math.max(1, Math.round(h * SCALE));
+  for (let dy = 0; dy < sh; dy++) {
+    for (let dx = 0; dx < sw; dx++) {
+      setRaw(grid, sx + dx, sy + dy, color);
     }
   }
 }
 
-/** Fills an axis-aligned ellipse centered at (cx, cy) with radii (rx, ry), in grid cells. */
+/** Fills an axis-aligned ellipse centered at (cx, cy) with radii (rx, ry), in logical grid cells. */
 export function fillEllipse(
   grid: Grid,
   cx: number,
@@ -46,15 +64,19 @@ export function fillEllipse(
   ry: number,
   color: string
 ): void {
-  const minX = Math.floor(cx - rx);
-  const maxX = Math.ceil(cx + rx);
-  const minY = Math.floor(cy - ry);
-  const maxY = Math.ceil(cy + ry);
+  const scx = cx * SCALE;
+  const scy = cy * SCALE;
+  const srx = Math.max(0.5, rx * SCALE);
+  const sry = Math.max(0.5, ry * SCALE);
+  const minX = Math.floor(scx - srx);
+  const maxX = Math.ceil(scx + srx);
+  const minY = Math.floor(scy - sry);
+  const maxY = Math.ceil(scy + sry);
   for (let y = minY; y <= maxY; y++) {
     for (let x = minX; x <= maxX; x++) {
-      const nx = (x + 0.5 - cx) / rx;
-      const ny = (y + 0.5 - cy) / ry;
-      if (nx * nx + ny * ny <= 1) setPixel(grid, x, y, color);
+      const nx = (x + 0.5 - scx) / srx;
+      const ny = (y + 0.5 - scy) / sry;
+      if (nx * nx + ny * ny <= 1) setRaw(grid, x, y, color);
     }
   }
 }
@@ -69,21 +91,23 @@ export function fillWedge(
   color: string,
   dir: "up" | "up-left" | "up-right" = "up"
 ): void {
-  for (let row = 0; row < h; row++) {
-    const t = row / Math.max(1, h - 1);
+  const steps = Math.max(2, Math.round(h * 2));
+  for (let row = 0; row < steps; row++) {
+    const t = row / (steps - 1);
+    const rowY = y + (h - h * (row / steps));
     let rowW: number;
     let offset: number;
     if (dir === "up") {
-      rowW = Math.max(1, Math.round(w * (1 - t)));
-      offset = Math.round((w - rowW) / 2);
+      rowW = Math.max(0.5, w * (1 - t));
+      offset = (w - rowW) / 2;
     } else if (dir === "up-left") {
-      rowW = Math.max(1, Math.round(w * (1 - t)));
+      rowW = Math.max(0.5, w * (1 - t));
       offset = w - rowW;
     } else {
-      rowW = Math.max(1, Math.round(w * (1 - t)));
+      rowW = Math.max(0.5, w * (1 - t));
       offset = 0;
     }
-    fillRect(grid, x + offset, y + (h - 1 - row), rowW, 1, color);
+    fillRect(grid, x + offset, y + h - (row + 1) * (h / steps), rowW, h / steps + 0.05, color);
   }
 }
 
@@ -91,14 +115,15 @@ export function cloneGrid(grid: Grid): Grid {
   return grid.map((row) => row.slice());
 }
 
-/** Copies every non-null cell from `src` onto `dest` (later layers paint over earlier ones). */
+/** Copies every non-null cell from `src` onto `dest` (both grids must be the same size; later layers paint over earlier ones). */
 export function paintOver(dest: Grid, src: Grid): void {
   for (let y = 0; y < src.length; y++) {
     for (let x = 0; x < src[y].length; x++) {
-      if (src[y][x] !== null) setPixel(dest, x, y, src[y][x] as string);
+      if (src[y][x] !== null) dest[y][x] = src[y][x];
     }
   }
 }
+
 
 /**
  * Grows a 1px outline ring (in `outlineColor`) around every filled region,

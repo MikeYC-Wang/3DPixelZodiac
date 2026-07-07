@@ -1,9 +1,10 @@
 import { AnimalSpec, SERPENT_GRID_W, SERPENT_GRID_H } from "./animals";
-import { Grid, outlineGrid } from "./pixel/grid";
+import { Grid, outlineGrid, SCALE } from "./pixel/grid";
 import { gridToRects } from "./pixel/svg";
 import { CELL, GRID_W, GRID_H, GROUND_Y, FRONT_LEG_X, BACK_LEG_X } from "./pixel/mammal";
 import { legGroup, wingGroup, bounceTransform, opacitySwap, segmentUndulation } from "./pixel/limbAnimation";
 
+const FINE_CELL = CELL / SCALE;
 const LEG_LENGTH = 32;
 const LEG_WIDTH = 20;
 const LEG_OVERLAP = 6; // legs start slightly above the body's bottom edge so there's no visible seam/gap
@@ -16,7 +17,7 @@ const SERPENT_CANVAS_H = SERPENT_GRID_H * CELL;
 function renderWalkOrHop(spec: AnimalSpec): string {
   const body = spec.buildBody!();
   const outlined = outlineGrid(body, spec.palette.outline);
-  const bodyRects = gridToRects(outlined, {}, CELL, 0, 0);
+  const bodyRects = gridToRects(outlined, {}, FINE_CELL, 0, 0);
   const footColor = spec.palette.outline;
   const rig = spec.legRig;
   const frontX = rig?.frontX ?? FRONT_LEG_X;
@@ -53,8 +54,8 @@ function renderWalkOrHop(spec: AnimalSpec): string {
   const isBiped = spec.locomotion === "biped";
   const legColor = isBiped ? spec.palette.accent : spec.palette.body;
 
-  const frontLeg = legGroup(frontX * CELL, groundPx, legWidth, legLength, legColor, footColor, 18, 0);
-  const backLeg = legGroup(backX * CELL, groundPx, legWidth, legLength, legColor, footColor, 18, 1);
+  const frontLeg = legGroup(frontX * CELL, groundPx, legWidth, legLength, legColor, footColor, 18, 0, rig?.pawColor);
+  const backLeg = legGroup(backX * CELL, groundPx, legWidth, legLength, legColor, footColor, 18, 1, rig?.pawColor);
 
   let wings = "";
   if (isBiped && spec.wings) {
@@ -99,9 +100,9 @@ function renderSlither(spec: AnimalSpec): string {
     const startCol = b * SERPENT_BAND_WIDTH;
     const width = Math.min(SERPENT_BAND_WIDTH, totalCols - startCol);
     const band = sliceColumnBand(outlined, startCol, width);
-    const rects = gridToRects(band, {}, CELL, 0, 0);
+    const rects = gridToRects(band, {}, FINE_CELL, 0, 0);
     if (!rects) continue;
-    const ax = startCol * CELL;
+    const ax = startCol * FINE_CELL;
     out += `<g transform="translate(${ax},0)"><g>${rects}${segmentUndulation(b, amplitude)}</g></g>`;
   }
   return out;

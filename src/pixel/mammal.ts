@@ -23,10 +23,20 @@ export const BACK_LEG_X = 9;
 
 export interface MammalOptions {
   bodyColor: string;
+  headColor?: string;
   bellyColor?: string;
   snoutColor?: string;
   eyeColor: string;
-  earStyle: "round" | "pointy" | "floppy" | "long" | "horns-curved" | "horns-swept" | "big-round" | "small-pointed";
+  earStyle:
+    | "round"
+    | "pointy"
+    | "floppy"
+    | "long"
+    | "horns-curved"
+    | "horns-swept"
+    | "big-round"
+    | "small-pointed"
+    | "small-tuft";
   earColor?: string;
   hornColor?: string;
   drawTail?: (grid: Grid) => void;
@@ -48,7 +58,7 @@ export function buildMammalBody(opts: MammalOptions): Grid {
   // ears/horns (drawn before head so the head circle overlaps their base cleanly)
   drawEars(grid, opts.earStyle, opts.earColor ?? opts.bodyColor, opts.hornColor ?? "#e9e0cb", headCy);
 
-  fillEllipse(grid, HEAD.cx, headCy, HEAD.r, HEAD.r, opts.bodyColor);
+  fillEllipse(grid, HEAD.cx, headCy, HEAD.r, HEAD.r, opts.headColor ?? opts.bodyColor);
   fillEllipse(grid, SNOUT.cx, headCy + (SNOUT.cy - HEAD.cy), SNOUT.rx, SNOUT.ry, opts.snoutColor ?? opts.bodyColor);
 
   if (opts.drawHeadExtras) opts.drawHeadExtras(grid);
@@ -83,6 +93,11 @@ function drawEars(
       // pig: small triangular ears close to the head
       fillWedge(grid, HEAD.cx - 2.5, top + 3, 2.2, 3, earColor, "up-right");
       fillWedge(grid, HEAD.cx + 2.8, top + 2.5, 2.2, 3, earColor, "up-left");
+      break;
+    case "small-tuft":
+      // ox/cow: two tiny dark spiky tufts on top of the head, not full horns
+      fillWedge(grid, HEAD.cx - 1.6, top + 3.5, 1.4, 2.2, hornColor, "up-right");
+      fillWedge(grid, HEAD.cx + 1.4, top + 3.2, 1.4, 2.2, hornColor, "up-left");
       break;
     case "pointy":
       fillWedge(grid, HEAD.cx - 4, top, 3.5, 6, earColor, "up-right");

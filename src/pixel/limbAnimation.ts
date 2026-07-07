@@ -32,7 +32,7 @@ function animateTransform(
   )}" keyTimes="${KEY_TIMES}" dur="${CYCLE_SECONDS}s" repeatCount="indefinite" ${extraAttrs}/>`;
 }
 
-/** A single animated leg (rect body + darker foot) swinging about a hip pivot. phase 0 or 1 (opposite). */
+/** A single animated leg (rect body + optional paw band + darker foot) swinging about a hip pivot. phase 0 or 1 (opposite). */
 export function legGroup(
   pivotX: number,
   pivotY: number,
@@ -41,17 +41,25 @@ export function legGroup(
   color: string,
   footColor: string,
   amplitudeDeg: number,
-  phase: 0 | 1
+  phase: 0 | 1,
+  pawColor?: string
 ): string {
   const wave = phase === 0 ? WAVE6 : rotated(WAVE6, STEPS / 2);
   const values = wave.map((v) => `${(v * amplitudeDeg).toFixed(1)} ${pivotX} ${pivotY}`);
-  const footH = Math.max(3, Math.round(width * 0.7));
+  const footH = Math.max(3, Math.round(width * 0.55));
+  const pawH = pawColor ? Math.max(3, Math.round(width * 0.45)) : 0;
+  const upperH = length - footH - pawH;
+  const paw = pawColor
+    ? `<rect x="${pivotX - width / 2}" y="${pivotY + upperH}" width="${width}" height="${pawH}" fill="${pawColor}"/>`
+    : "";
   return `<g transform="rotate(0 ${pivotX} ${pivotY})">
-    <rect x="${pivotX - width / 2}" y="${pivotY}" width="${width}" height="${length - footH}" fill="${color}"/>
-    <rect x="${pivotX - width / 2}" y="${pivotY + length - footH}" width="${width}" height="${footH}" fill="${footColor}"/>
+    <rect x="${pivotX - width / 2}" y="${pivotY}" width="${width}" height="${upperH}" fill="${color}"/>
+    ${paw}
+    <rect x="${pivotX - width / 2}" y="${pivotY + upperH + pawH}" width="${width}" height="${footH}" fill="${footColor}"/>
     ${animateTransform("rotate", values)}
   </g>`;
 }
+
 
 /** A wing/arm swinging about a shoulder pivot - same mechanism as a leg but usually wider amplitude. */
 export function wingGroup(

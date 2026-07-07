@@ -1,0 +1,19 @@
+{
+  "name": "3d-pixel-zodiac",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Pixel-art animated Chinese zodiac SVG generator (SMIL animation, no JS)",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "generate": "node dist/index.js --output dist/zodiac.svg",
+    "generate:all": "node dist/generateAll.js"
+  },
+  "dependencies": {
+    "lunar-javascript": "^1.7.3"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.30",
+    "typescript": "^5.4.5"
+  }
+}

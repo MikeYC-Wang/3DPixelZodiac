@@ -1,0 +1,68 @@
+name: Generate pixel zodiac
+
+on:
+  schedule:
+    # Chinese New Year moves every year, but this cheap daily refresh keeps
+    # the published SVGs in sync automatically without needing to know the
+    # exact rollover date/time in advance.
+    - cron: "5 0 * * *"
+    - cron: "5 12 * * *"
+  workflow_dispatch: {}
+  push:
+    branches: [main]
+
+permissions:
+  contents: write
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout main
+        uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build
+        run: npm run build
+
+      - name: Generate all zodiac SVG variants
+        run: npm run generate:all
+
+      - name: Publish to the output branch
+        run: |
+          set -e
+          mkdir -p /tmp/pixel-zodiac-output
+          cp -r dist/*.svg /tmp/pixel-zodiac-output/
+
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+          git fetch origin output || true
+          if git show-ref --verify --quiet refs/remotes/origin/output; then
+            git checkout -B output origin/output
+          else
+            git checkout --orphan output
+            git rm -rf . > /dev/null 2>&1 || true
+          fi
+
+          mkdir -p dist
+          rm -f dist/*.svg
+          cp /tmp/pixel-zodiac-output/*.svg dist/
+
+          git add dist/*.svg
+          if git diff --cached --quiet; then
+            echo "No changes to publish."
+          else
+            git commit -m "chore: update pixel zodiac SVGs"
+            git push origin output
+          fi

@@ -130,19 +130,18 @@ function drawEars(
       fillEllipse(grid, HEAD.cx + 3.3, top + 3.6, 1.7, 1.9, earColor);
       break;
     case "small-tuft": {
-      // ox/cow: two horns rising from the sides of the head then curving up and inward so the
-      // pointed tips face each other over the crown (crescent / "互指" shape).
+      // ox/cow: standard horns - grow from both sides and curve upward/outward with pointed tips.
       const by = top + 2.4;
-      // left horn: base sits out to the left, curls up and to the right toward center
-      fillRect(grid, HEAD.cx - 4.4, by + 2, 1.6, 1.4, hornColor);
-      fillRect(grid, HEAD.cx - 4.2, by + 0.7, 1.5, 1.4, hornColor);
-      fillRect(grid, HEAD.cx - 3.4, by - 0.4, 1.4, 1.3, hornColor);
-      setPixel(grid, HEAD.cx - 2.4, by - 1.1, hornColor);
-      // right horn: mirror, curls up and to the left toward center
-      fillRect(grid, HEAD.cx + 2.8, by + 2, 1.6, 1.4, hornColor);
-      fillRect(grid, HEAD.cx + 2.7, by + 0.7, 1.5, 1.4, hornColor);
-      fillRect(grid, HEAD.cx + 2, by - 0.4, 1.4, 1.3, hornColor);
-      setPixel(grid, HEAD.cx + 1.4, by - 1.1, hornColor);
+      // left horn: shorter and closer to center, finishing in a crisp single-pixel tip
+      fillRect(grid, HEAD.cx - 2.9, by + 2.2, 1.6, 1.2, hornColor);
+      fillRect(grid, HEAD.cx - 3.6, by + 1.2, 1.3, 1.1, hornColor);
+      fillRect(grid, HEAD.cx - 4.2, by + 0.3, 1.1, 0.9, hornColor);
+      setPixel(grid, HEAD.cx - 4.8, by - 0.2, hornColor);
+      // right horn: mirrored closer spacing + sharp tip
+      fillRect(grid, HEAD.cx + 1.3, by + 2.2, 1.6, 1.2, hornColor);
+      fillRect(grid, HEAD.cx + 2.9, by + 1.2, 1.3, 1.1, hornColor);
+      fillRect(grid, HEAD.cx + 3.8, by + 0.3, 1.1, 0.9, hornColor);
+      setPixel(grid, HEAD.cx + 4.8, by - 0.2, hornColor);
       break;
     }
     case "pointy":

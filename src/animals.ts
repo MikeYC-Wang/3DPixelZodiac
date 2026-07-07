@@ -80,36 +80,10 @@ export const ANIMALS: AnimalSpec[] = [
     key: "ox",
     order: 1,
     name: { zh: "牛", en: "Ox", ja: "ウシ", ko: "소" },
-    palette: { outline: "#241a10", body: "#faf7f2", belly: "#ffffff", accent: "#2b2b2e", eye: "#141116" },
+    palette: { outline: "#241608", body: "#b86a31", belly: "#e7d8c3", accent: "#8a3e1f", eye: "#141116" },
     locomotion: "walk",
-    legRig: { frontX: 20, backX: 9, pawColor: "#ffffff" },
-    buildBody: () =>
-      buildMammalBody({
-        // dairy cow: white coat with black Holstein-style patches, pink nose only (not a pink head)
-        bodyColor: "#faf7f2",
-        headColor: "#faf7f2",
-        bellyColor: "#ffffff",
-        snoutColor: "#f0c9b8",
-        eyeColor: "#141116",
-        earStyle: "small-tuft",
-        hornColor: "#2a1a10",
-        drawMarkings: (grid) => {
-          // Keep Holstein markings as clean round blobs placed well inside the silhouette.
-          fillEllipse(grid, 10.2, 13.2, 2.6, 2.1, "#2b2b2e");
-          fillEllipse(grid, 16.8, 17.1, 2.8, 2.2, "#2b2b2e");
-          fillEllipse(grid, 7.2, 16.8, 1.8, 1.5, "#2b2b2e");
-          fillEllipse(grid, 21.2, 10.6, 1.3, 1.2, "#2b2b2e");
-        },
-        drawTail: (grid) => {
-          const pts: SerpentPoint[] = [
-            { x: 4.5, y: 15.5, r: 0.7 },
-            { x: 3, y: 17.5, r: 0.6 },
-            { x: 2.4, y: 19.5, r: 0.6 },
-          ];
-          drawSerpentTube(grid, pts, "#faf7f2");
-          fillEllipse(grid, 2, 20.3, 0.9, 0.9, "#2a1a10");
-        },
-      }),
+    legRig: { frontX: 20, backX: 9, pawColor: "#f1ece3" },
+    buildBody: () => buildOxBody(),
   },
   {
     key: "tiger",
@@ -224,26 +198,8 @@ export const ANIMALS: AnimalSpec[] = [
     name: { zh: "馬", en: "Horse", ja: "ウマ", ko: "말" },
     palette: { outline: "#241608", body: "#b06a35", belly: "#e8c79a", accent: "#3b2412", eye: "#141116" },
     locomotion: "walk",
-    legRig: { frontX: 20, backX: 9, length: 42, width: 16 },
-    buildBody: () =>
-      buildMammalBody({
-        bodyColor: "#b06a35",
-        bellyColor: "#e8c79a",
-        eyeColor: "#141116",
-        earStyle: "pointy",
-        drawHeadExtras: (grid) => {
-          // a light mane tracing the neck (not a big blocky poof), plus a longer horse-like nose
-          fillRect(grid, 17.5, 5.4, 5.5, 1.4, "#3b2412");
-          fillRect(grid, 16, 7, 1.8, 4.5, "#3b2412");
-          fillRect(grid, 21.6, 6.6, 1.4, 1.8, "#3b2412");
-          fillRect(grid, 29.6, 12.7, 1.8, 1.5, "#b06a35");
-          setPixel(grid, 30.5, 13.2, "#3b2412");
-        },
-        drawTail: (grid) => {
-          fillRect(grid, 1.5, 12, 2.6, 5, "#3b2412");
-          fillRect(grid, 1, 16.5, 2.2, 5, "#3b2412");
-        },
-      }),
+    legRig: { frontX: 21, backX: 9, groundY: 21, length: 30, width: 12, pawColor: "#241608" },
+    buildBody: () => buildHorseBody(),
   },
   {
     key: "goat",
@@ -441,6 +397,85 @@ function buildMonkeyBody(): Grid {
   fillEllipse(grid, 16, 8.2, 2.5, 2.3, face);
   setPixel(grid, 14.3, 7, "#141116");
   setPixel(grid, 17.7, 7, "#141116");
+  return grid;
+}
+
+function buildHorseBody(): Grid {
+  const grid = createGrid(GRID_W, GRID_H);
+  const body = "#b06a35";
+  const belly = "#e8c79a";
+  const mane = "#3b2412";
+
+  // longer torso with a slightly slimmer belly than ox/dog to avoid a rodent-like silhouette
+  fillEllipse(grid, 14.3, 15.4, 9.2, 5.2, body);
+  fillEllipse(grid, 14.8, 18.2, 5.4, 2.8, belly);
+
+  // neck bridge into head
+  fillRect(grid, 19.2, 10.7, 4.8, 3.4, body);
+
+  // horse head: longer face / muzzle, not a compact round snout
+  fillEllipse(grid, 24, 11.4, 4.7, 4, body);
+  fillRect(grid, 27.7, 11.6, 3.4, 2.3, body);
+  fillRect(grid, 29, 13.6, 2.4, 1.2, belly);
+  setPixel(grid, 24.8, 10.3, "#141116");
+  setPixel(grid, 30.3, 13.8, "#3b2412");
+
+  // upright ears + a short forelock and neck mane
+  fillRect(grid, 21.6, 5.7, 1.3, 3.2, body);
+  fillRect(grid, 24.8, 5.6, 1.3, 3.1, body);
+  fillRect(grid, 20.1, 7, 2.6, 1.1, mane);
+  fillRect(grid, 18.5, 8.4, 1.5, 5.9, mane);
+
+  // tail should be a short rear tail with a dark tuft, not a thin rat tail
+  fillRect(grid, 3.1, 12.6, 1.4, 5.2, mane);
+  fillEllipse(grid, 3.3, 18.6, 1.3, 1.8, mane);
+
+  return grid;
+}
+
+function buildOxBody(): Grid {
+  const grid = createGrid(GRID_W, GRID_H);
+  const body = "#b86a31";
+  const bodyHi = "#d58436";
+  const shade = "#8a3e1f";
+  const muzzle = "#d8cec0";
+  const horn = "#e8e1d4";
+
+  // flatter back profile: keep a long straight top line and reduce roundness.
+  fillRect(grid, 7.2, 10.6, 16.2, 8.2, body);
+  fillEllipse(grid, 7.3, 14.8, 2.4, 4.3, body);
+  fillEllipse(grid, 23.3, 14.8, 2.8, 4.3, body);
+  // low shoulder bump while preserving a mostly flat back silhouette
+  fillRect(grid, 10.4, 9.6, 6.6, 1.2, bodyHi);
+  fillRect(grid, 17, 10.1, 2.3, 0.9, bodyHi);
+
+  // neck/dewlap shadow under the head
+  fillRect(grid, 19.6, 12.8, 2, 6.2, shade);
+  fillRect(grid, 20.8, 15.4, 1.7, 4.8, shade);
+
+  // head with blocky front and light muzzle
+  fillEllipse(grid, 24, 12.8, 4.5, 4.1, body);
+  fillRect(grid, 26.9, 12.8, 3.3, 2.9, muzzle);
+  setPixel(grid, 28.2, 14.2, "#4b433c");
+  setPixel(grid, 29.5, 14.2, "#4b433c");
+  setPixel(grid, 24.8, 11.3, "#141116");
+
+  // horns attached to the head crown: roots overlap head pixels so they don't float
+  fillRect(grid, 21.6, 8.1, 1.4, 1.2, horn);
+  fillRect(grid, 20.8, 7, 1.3, 1.2, horn);
+  setPixel(grid, 20.3, 6.5, horn);
+  fillRect(grid, 24.6, 8.1, 1.4, 1.2, horn);
+  fillRect(grid, 25.7, 7, 1.3, 1.2, horn);
+  setPixel(grid, 27.1, 6.5, horn);
+  fillRect(grid, 22.9, 9.2, 1.4, 1, shade);
+
+  // smaller underside mass so the belly doesn't look too bulky
+  fillEllipse(grid, 16.1, 19.1, 4.2, 1.7, shade);
+
+  // detached short tail with white tip (leave a visible gap from body)
+  fillRect(grid, 2.2, 12.8, 1.1, 4.4, body);
+  fillRect(grid, 1.9, 17, 1.7, 1.7, "#f2efe8");
+
   return grid;
 }
 

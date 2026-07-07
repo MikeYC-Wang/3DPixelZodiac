@@ -2,7 +2,7 @@ import { AnimalSpec, SERPENT_GRID_W, SERPENT_GRID_H } from "./animals";
 import { Grid, outlineGrid, SCALE } from "./pixel/grid";
 import { gridToRects } from "./pixel/svg";
 import { CELL, GRID_W, GRID_H, GROUND_Y, FRONT_LEG_X, BACK_LEG_X } from "./pixel/mammal";
-import { legGroup, wingGroup, bounceTransform, opacitySwap, segmentUndulation } from "./pixel/limbAnimation";
+import { legGroup, wingGroup, bounceTransform, opacitySwap, CYCLE_SECONDS } from "./pixel/limbAnimation";
 
 const FINE_CELL = CELL / SCALE;
 const LEG_LENGTH = 32;
@@ -79,45 +79,20 @@ function legStub(
   }" y="${groundPx + lengthPx - 5}" width="${width}" height="5" fill="${footColor}"/>`;
 }
 
-
-const SERPENT_BAND_WIDTH = 2; // cells per animated column band
-
-/** Slices a grid's columns [startCol, startCol+width) into a standalone sub-grid, keeping all rows. */
-function sliceColumnBand(grid: Grid, startCol: number, width: number): Grid {
-  return grid.map((row) => row.slice(startCol, startCol + width));
-}
-
 function renderSlither(spec: AnimalSpec): string {
   const grid = spec.buildSlitherGrid!();
-  // outlined ONCE on the whole continuous tube, so the silhouette reads as
-  // one smooth body instead of a chain of separately-outlined blobs
+  // outlined once on the whole body so dragon/snake read as a single silhouette.
   const outlined = outlineGrid(grid, spec.palette.outline, [spec.palette.eye]);
-  const amplitude = 9;
-  const totalCols = outlined[0].length;
-  // the head end (rightmost columns) stays rigid so the face/horns don't get chopped into wiggling
-  // slices - only the body/tail to its left undulates
-  const staticCols = Math.min(totalCols, Math.round((spec.headStaticWidth ?? 0) * SCALE));
-  const animatedCols = totalCols - staticCols;
-  const bandCount = Math.ceil(animatedCols / SERPENT_BAND_WIDTH);
-  let out = "";
-  for (let b = 0; b < bandCount; b++) {
-    const startCol = b * SERPENT_BAND_WIDTH;
-    const width = Math.min(SERPENT_BAND_WIDTH, animatedCols - startCol);
-    const band = sliceColumnBand(outlined, startCol, width);
-    const rects = gridToRects(band, {}, FINE_CELL, 0, 0);
-    if (!rects) continue;
-    const ax = startCol * FINE_CELL;
-    out += `<g transform="translate(${ax},0)"><g>${rects}${segmentUndulation(b, amplitude)}</g></g>`;
-  }
-  if (staticCols > 0) {
-    const headBand = sliceColumnBand(outlined, animatedCols, staticCols);
-    const rects = gridToRects(headBand, {}, FINE_CELL, 0, 0);
-    if (rects) {
-      const ax = animatedCols * FINE_CELL;
-      out += `<g transform="translate(${ax},0)">${rects}</g>`;
-    }
-  }
-  return out;
+  const rects = gridToRects(outlined, {}, FINE_CELL, 0, 0);
+  if (!rects) return "";
+  // user-requested behavior: no swimming undulation, only whole-body vertical float.
+  const values = ["0 -6", "0 -3", "0 0", "0 3", "0 0", "0 -3"];
+  return `<g>
+    ${rects}
+    <animateTransform attributeName="transform" type="translate" calcMode="discrete" values="${values.join(
+      ";"
+    )}" keyTimes="0;0.1667;0.3333;0.5000;0.6667;0.8333" dur="${CYCLE_SECONDS}s" repeatCount="indefinite"/>
+  </g>`;
 }
 
 export function renderZodiacSvg(spec: AnimalSpec): string {

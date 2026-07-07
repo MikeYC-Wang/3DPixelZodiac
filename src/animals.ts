@@ -1,4 +1,4 @@
-import { Grid, createGrid, fillEllipse, fillEllipseMasked, fillRect, setPixel } from "./pixel/grid";
+import { Grid, createGrid, drawPixelMap, fillEllipse, fillEllipseMasked, fillRect, setPixel } from "./pixel/grid";
 import { buildMammalBody, GRID_W, GRID_H } from "./pixel/mammal";
 import { SerpentPoint, drawSerpentTube, drawSerpentMarkings } from "./pixel/serpent";
 
@@ -119,41 +119,42 @@ export const ANIMALS: AnimalSpec[] = [
     key: "dragon",
     order: 4,
     name: { zh: "龍", en: "Dragon", ja: "タツ", ko: "용" },
-    palette: { outline: "#0d2e1c", body: "#2f9e5f", belly: "#d8f5c4", accent: "#e8c94b", eye: "#141116" },
+    palette: { outline: "#2a1408", body: "#f06b1b", belly: "#ffd7a6", accent: "#7b2f1d", eye: "#141116" },
     locomotion: "slither",
-    headStaticWidth: 13,
+    headStaticWidth: 0,
     buildSlitherGrid: () => {
       const grid = createGrid(SERPENT_GRID_W, SERPENT_GRID_H);
-      const points: SerpentPoint[] = [
-        { x: 30, y: 11, r: 4 },
-        { x: 25, y: 10.5, r: 3.1 },
-        { x: 20, y: 11.5, r: 2.6 },
-        { x: 15, y: 10.5, r: 2.1 },
-        { x: 10, y: 11.5, r: 1.6 },
-        { x: 5.5, y: 10.5, r: 1.1 },
-        { x: 2.5, y: 11, r: 0.6 },
+      // Right-facing seated dragon. Back under wing is intentionally trimmed so it doesn't bulge.
+      const O = "#f06b1b";
+      const C = "#ffd7a6";
+      const D = "#7b2f1d";
+      const H = "#fff6e3";
+      const E = "#141116";
+      const dragon = [
+        "......................",
+        "..............HH......",
+        "....DD........HH......",
+        "...DDDD......OOO......",
+        "..DDDDDD....OOOOO.....",
+        "..DDDDDDD..OOOOEOO....",
+        "..DDDCCDD..OOOOOOO....",
+        "..DDCCCDD.OOOOOOO.....",
+        "...DDCCDD.OOOOOO......",
+        "....DDDD.OOOOOOOC.....",
+        "......DDOOOOOOOOCC....",
+        ".......OOOOOOOOCCC....",
+        ".......OOOOOOOOCCC....",
+        ".......OOOOOOOOCCC....",
+        ".......OOOOOOOOCCC....",
+        "......OOOOOOOOOOCC....",
+        "......OOOOOOOOOOCC....",
+        ".....OOOOOOO..OOOO....",
+        "OOOOOOOOOO....OOOO....",
+        ".OOOOOO.......OOO.....",
+        "......................",
+        "......................",
       ];
-      drawSerpentTube(grid, points, "#2f9e5f");
-      const head = points[0];
-      const neck1 = points[1];
-      const neck2 = points[2];
-      // spine spikes running from the head back down the neck, for a fiercer silhouette
-      fillRect(grid, neck1.x - 0.7, neck1.y - neck1.r - 1.8, 1.3, 2.4, "#e8c94b");
-      fillRect(grid, neck2.x - 0.6, neck2.y - neck2.r - 1.5, 1.1, 2, "#e8c94b");
-      // two thick curved horns, each a wide base + back-swept tip so they read clearly as horns
-      fillRect(grid, head.x - 2.6, head.y - 7, 2, 3.6, "#e8c94b");
-      fillRect(grid, head.x - 3.8, head.y - 8.6, 2, 2.2, "#e8c94b");
-      fillRect(grid, head.x + 0.6, head.y - 7, 2, 3.6, "#e8c94b");
-      fillRect(grid, head.x + 1.8, head.y - 8.6, 2, 2.2, "#e8c94b");
-      // angled fierce brow above the eye
-      fillRect(grid, head.x - 2, head.y - 2.7, 3, 1, "#12240f");
-      // snout + jaw + fang + a single trailing whisker
-      fillEllipse(grid, head.x + 3.2, head.y + 1, 1.8, 1.5, "#2f9e5f");
-      fillRect(grid, head.x + 3, head.y + 2.1, 2.4, 1, "#e8c94b");
-      fillRect(grid, head.x + 4.6, head.y + 2.6, 0.8, 1.1, "#fff3df");
-      fillRect(grid, head.x + 3.8, head.y + 3.2, 3.2, 0.8, "#e8c94b");
-      fillEllipse(grid, head.x, head.y - 1.4, 0.9, 0.9, "#c0392b");
-      setPixel(grid, head.x, head.y - 1.4, "#141116");
+      drawPixelMap(grid, dragon, { O, C, D, H, E }, 8, 0);
       return grid;
     },
   },
@@ -161,34 +162,40 @@ export const ANIMALS: AnimalSpec[] = [
     key: "snake",
     order: 5,
     name: { zh: "蛇", en: "Snake", ja: "ヘビ", ko: "뱀" },
-    palette: { outline: "#12240f", body: "#4c9a3f", belly: "#d9e8a8", accent: "#c0392b", eye: "#141116" },
+    palette: { outline: "#123d1c", body: "#3fa04a", belly: "#e6d24a", accent: "#c0392b", eye: "#141116" },
     locomotion: "slither",
-    headStaticWidth: 11,
+    headStaticWidth: 0,
     buildSlitherGrid: () => {
       const grid = createGrid(SERPENT_GRID_W, SERPENT_GRID_H);
-      const points: SerpentPoint[] = [
-        { x: 31, y: 11, r: 2.6 },
-        { x: 27, y: 9.8, r: 2.3 },
-        { x: 23, y: 11.8, r: 2.0 },
-        { x: 19, y: 9.8, r: 1.7 },
-        { x: 15, y: 11.5, r: 1.4 },
-        { x: 11, y: 10, r: 1.1 },
-        { x: 7, y: 11.2, r: 0.8 },
-        { x: 3.5, y: 10.3, r: 0.4 },
+      // Slender upright S with visible forked tongue.
+      const G = "#3fa04a";
+      const Y = "#e6d24a";
+      const R = "#c0392b";
+      const E = "#141116";
+      const W = "#ffffff";
+      const snake = [
+        "................",
+        "....GGGGG.......",
+        "...GGGGGGG......",
+        "...GGEWGGG.RRR..",
+        "...GGGGGGG..R...",
+        "....GGGGG.......",
+        ".....GYG........",
+        "....GYG.........",
+        "....GYG.........",
+        "....GYG.........",
+        ".....GYG........",
+        "......GYG.......",
+        ".......GYG......",
+        "........GYG.....",
+        "........GYG.....",
+        "........GYG.....",
+        ".......GYG......",
+        ".....GGGG.......",
+        "...GGGGGG.......",
+        "....GGGG........",
       ];
-      drawSerpentTube(grid, points, "#4c9a3f");
-      drawSerpentMarkings(grid, points, "#e8e2a0", 4);
-      const head = points[0];
-      // cobra-style hood flare behind the head, for a fiercer silhouette
-      fillEllipse(grid, head.x - 1.2, head.y, 2.6, 3.3, "#4c9a3f");
-      fillEllipseMasked(grid, head.x - 1.2, head.y, 2.4, 3, "#3f8a34", ["#4c9a3f"]);
-      // forked tongue + small fangs
-      fillRect(grid, head.x + 2, head.y, 2.6, 0.8, "#c0392b");
-      fillRect(grid, head.x + 4.2, head.y - 0.5, 0.9, 0.6, "#c0392b");
-      fillRect(grid, head.x + 4.2, head.y + 0.7, 0.9, 0.6, "#c0392b");
-      fillRect(grid, head.x + 1.6, head.y + 1.1, 0.6, 0.9, "#fff8e0");
-      setPixel(grid, head.x + 0.5, head.y - 1.3, "#141116");
-      fillRect(grid, head.x - 1.5, head.y - 1.8, 1.8, 1, "#d9e8a8");
+      drawPixelMap(grid, snake, { G, Y, R, E, W }, 11, 1);
       return grid;
     },
   },

@@ -150,6 +150,30 @@ export function cloneGrid(grid: Grid): Grid {
   return grid.map((row) => row.slice());
 }
 
+/**
+ * Paints a hand-authored pixel map onto the grid. Each character in `map` is one
+ * logical cell; characters are looked up in `legend` ('.'/space = transparent).
+ * This lets sprites be drawn shape-accurately cell-by-cell instead of approximated
+ * from overlapping ellipses/rects.
+ */
+export function drawPixelMap(
+  grid: Grid,
+  map: string[],
+  legend: Record<string, string>,
+  offsetX = 0,
+  offsetY = 0
+): void {
+  for (let y = 0; y < map.length; y++) {
+    const row = map[y];
+    for (let x = 0; x < row.length; x++) {
+      const ch = row[x];
+      if (ch === "." || ch === " ") continue;
+      const color = legend[ch];
+      if (color) setPixel(grid, offsetX + x, offsetY + y, color);
+    }
+  }
+}
+
 /** Copies every non-null cell from `src` onto `dest` (both grids must be the same size; later layers paint over earlier ones). */
 export function paintOver(dest: Grid, src: Grid): void {
   for (let y = 0; y < src.length; y++) {

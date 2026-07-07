@@ -53,13 +53,13 @@ export const ANIMALS: AnimalSpec[] = [
         earColor: "#8d8a94",
         drawTail: (grid) => {
           const pts: [number, number][] = [
-            [6, 12],
-            [4, 13],
-            [2, 12.5],
-            [0.5, 11],
+            [6, 15],
+            [4, 16],
+            [2, 15.5],
+            [0.5, 14],
           ];
           for (const [x, y] of pts) setPixel(grid, x, y, "#8d8a94");
-          setPixel(grid, 0, 10.5, "#e8a9b8");
+          setPixel(grid, 0, 13.5, "#e8a9b8");
         },
       }),
   },
@@ -67,21 +67,23 @@ export const ANIMALS: AnimalSpec[] = [
     key: "ox",
     order: 1,
     name: { zh: "牛", en: "Ox", ja: "ウシ", ko: "소" },
-    palette: { outline: "#241608", body: "#7d5330", belly: "#c99a63", accent: "#e9e0cb", eye: "#141116" },
+    palette: { outline: "#20140a", body: "#7d5330", belly: "#c99a63", accent: "#f0e9d6", eye: "#141116" },
     locomotion: "walk",
     buildBody: () =>
       buildMammalBody({
         bodyColor: "#7d5330",
         bellyColor: "#c99a63",
+        snoutColor: "#4a3626",
         eyeColor: "#141116",
-        earStyle: "round",
+        earStyle: "horns-curved",
+        hornColor: "#f0e9d6",
         drawHeadExtras: (grid) => {
-          fillRect(grid, 21, 2, 2, 2, "#e9e0cb");
-          fillRect(grid, 25, 2, 2, 2, "#e9e0cb");
+          // nose ring
+          setPixel(grid, 29, 13.5, "#f0e9d6");
         },
         drawTail: (grid) => {
-          fillRect(grid, 3, 12, 3, 1, "#7d5330");
-          fillEllipse(grid, 2, 14, 1.3, 1.3, "#e9e0cb");
+          fillRect(grid, 3, 15, 3, 1, "#7d5330");
+          fillEllipse(grid, 2, 17, 1.3, 1.3, "#241a10");
         },
       }),
   },
@@ -89,27 +91,35 @@ export const ANIMALS: AnimalSpec[] = [
     key: "tiger",
     order: 2,
     name: { zh: "虎", en: "Tiger", ja: "トラ", ko: "호랑이" },
-    palette: { outline: "#241206", body: "#ea7c1e", belly: "#fff3df", accent: "#221008", eye: "#141116" },
+    palette: { outline: "#241206", body: "#f0821e", belly: "#fff3df", accent: "#000000", eye: "#141116" },
     locomotion: "walk",
     buildBody: () =>
       buildMammalBody({
-        bodyColor: "#ea7c1e",
+        bodyColor: "#f0821e",
         bellyColor: "#fff3df",
         eyeColor: "#141116",
         earStyle: "pointy",
+        earColor: "#f0821e",
+        drawHeadExtras: (grid) => {
+          // black ear tips + face stripes
+          fillRect(grid, 19, 4, 2, 2, "#000000");
+          fillRect(grid, 25.5, 3.5, 2, 2, "#000000");
+          fillRect(grid, 22, 9, 1, 2, "#000000");
+          fillRect(grid, 25, 9, 1, 2, "#000000");
+        },
         drawMarkings: (grid) => {
           const stripes: [number, number, number][] = [
-            [9, 8, 2],
-            [12, 7, 2],
-            [16, 8, 3],
-            [19, 9, 2],
-            [22, 4, 2],
+            [8, 11, 3],
+            [11, 10, 4],
+            [14, 11, 4],
+            [17, 10, 4],
+            [20, 11, 3],
           ];
-          for (const [x, y, h] of stripes) fillRect(grid, x, y, 1, h, "#221008");
+          for (const [x, y, h] of stripes) fillRect(grid, x, y, 2, h, "#000000");
         },
         drawTail: (grid) => {
-          fillRect(grid, 3, 11, 3, 1, "#ea7c1e");
-          fillRect(grid, 1, 10, 1, 2, "#221008");
+          fillRect(grid, 2, 13, 4, 1.5, "#f0821e");
+          fillRect(grid, 1, 12, 1.5, 2, "#000000");
         },
       }),
   },
@@ -127,12 +137,9 @@ export const ANIMALS: AnimalSpec[] = [
         eyeColor: "#141116",
         earStyle: "long",
         earColor: "#f6f1e9",
-        drawHeadExtras: (grid) => {
-          fillRect(grid, 21, 0, 1, 5, "#f2a6c1");
-          fillRect(grid, 25, 0, 1, 5, "#f2a6c1");
-        },
+        hornColor: "#f2a6c1",
         drawTail: (grid) => {
-          fillEllipse(grid, 5, 13, 1.6, 1.6, "#ffffff");
+          fillEllipse(grid, 5, 16, 1.8, 1.8, "#ffffff");
         },
       }),
   },
@@ -147,16 +154,25 @@ export const ANIMALS: AnimalSpec[] = [
       color: "#2f9e5f",
       startX: 27,
       startY: 10,
-      stepX: -4.2,
-      wave: 2.2,
-      rx: 3.1,
-      ry: 2.5,
+      stepX: -4.4,
+      wave: 2.4,
+      rx: 3.3,
+      ry: 2.7,
       shrink: 0.32,
       headExtra: (grid, cx, cy) => {
-        fillRect(grid, cx - 1, cy - 5, 1, 3, "#e8c94b");
-        fillRect(grid, cx + 2, cy - 5, 1, 3, "#e8c94b");
-        setPixel(grid, cx + 2, cy - 1, "#141116");
-        fillRect(grid, cx + 3, cy + 1, 2, 1, "#e8c94b");
+        // curved horns
+        fillRect(grid, cx - 2, cy - 6, 1.4, 3, "#e8c94b");
+        fillRect(grid, cx - 3, cy - 7.5, 1.4, 2, "#e8c94b");
+        fillRect(grid, cx + 2.5, cy - 6, 1.4, 3, "#e8c94b");
+        fillRect(grid, cx + 3.5, cy - 7.5, 1.4, 2, "#e8c94b");
+        // whiskers
+        fillRect(grid, cx + 4, cy + 1, 3, 0.8, "#e8c94b");
+        fillRect(grid, cx + 4, cy + 2.2, 2.4, 0.8, "#e8c94b");
+        // snout + eye
+        fillEllipse(grid, cx + 3.5, cy + 0.5, 1.6, 1.3, "#2f9e5f");
+        setPixel(grid, cx + 1.5, cy - 1, "#141116");
+        // mane spike along the back
+        fillRect(grid, cx - 1, cy - 4.5, 1.2, 2, "#e8c94b");
       },
     }),
   },
@@ -177,8 +193,11 @@ export const ANIMALS: AnimalSpec[] = [
       ry: 2,
       shrink: 0.22,
       headExtra: (grid, cx, cy) => {
-        fillRect(grid, cx + 2, cy, 2, 1, "#c0392b");
+        fillRect(grid, cx + 2, cy, 2.4, 1, "#c0392b");
+        fillRect(grid, cx + 4, cy - 0.2, 0.8, 0.6, "#c0392b");
+        fillRect(grid, cx + 4, cy + 0.6, 0.8, 0.6, "#c0392b");
         setPixel(grid, cx + 1, cy - 1, "#141116");
+        fillRect(grid, cx - 1, cy - 1.5, 1.6, 1, "#d9e8a8");
       },
     }),
   },
@@ -195,11 +214,11 @@ export const ANIMALS: AnimalSpec[] = [
         eyeColor: "#141116",
         earStyle: "pointy",
         drawHeadExtras: (grid) => {
-          fillRect(grid, 18, 2, 8, 2, "#3b2412");
-          fillRect(grid, 16, 4, 2, 6, "#3b2412");
+          fillRect(grid, 18, 5, 9, 2.2, "#3b2412");
+          fillRect(grid, 16, 7, 2.2, 6, "#3b2412");
         },
         drawTail: (grid) => {
-          fillRect(grid, 2, 9, 2, 8, "#3b2412");
+          fillRect(grid, 1.5, 12, 2.4, 9, "#3b2412");
         },
       }),
   },
@@ -214,14 +233,15 @@ export const ANIMALS: AnimalSpec[] = [
         bodyColor: "#efe6d6",
         bellyColor: "#ffffff",
         eyeColor: "#141116",
-        earStyle: "floppy",
+        earStyle: "horns-swept",
+        hornColor: "#d8cba6",
+        earColor: "#efe6d6",
         drawHeadExtras: (grid) => {
-          fillRect(grid, 22, 1, 1, 3, "#cbbfa0");
-          fillRect(grid, 26, 1, 1, 3, "#cbbfa0");
-          fillRect(grid, 24, 11, 1, 2, "#cbbfa0");
+          // beard
+          fillRect(grid, 27, 15, 1.4, 2.4, "#d8cba6");
         },
         drawTail: (grid) => {
-          fillEllipse(grid, 5, 12.5, 1.4, 1.4, "#efe6d6");
+          fillEllipse(grid, 5, 15.5, 1.4, 1.4, "#efe6d6");
         },
       }),
   },
@@ -238,12 +258,18 @@ export const ANIMALS: AnimalSpec[] = [
         snoutColor: "#e8c9a0",
         eyeColor: "#141116",
         earStyle: "round",
+        earColor: "#e8c9a0",
+        drawHeadExtras: (grid) => {
+          // pale face mask around the muzzle
+          fillEllipse(grid, 25.5, 12.5, 2.6, 2.4, "#e8c9a0");
+        },
         drawTail: (grid) => {
           const pts: [number, number][] = [
-            [4, 11],
-            [2, 9],
-            [1.5, 6],
-            [3, 4],
+            [4, 14],
+            [2, 12],
+            [1.3, 9],
+            [2.2, 6.5],
+            [4, 5.5],
           ];
           for (const [x, y] of pts) setPixel(grid, x, y, "#8a5a3c");
         },
@@ -261,17 +287,23 @@ export const ANIMALS: AnimalSpec[] = [
     key: "dog",
     order: 10,
     name: { zh: "狗", en: "Dog", ja: "イヌ", ko: "개" },
-    palette: { outline: "#241a10", body: "#a9713f", belly: "#e9cfa0", accent: "#4a2f18", eye: "#141116" },
+    palette: { outline: "#241a10", body: "#a9713f", belly: "#e9cfa0", accent: "#c0392b", eye: "#141116" },
     locomotion: "walk",
     buildBody: () =>
       buildMammalBody({
         bodyColor: "#a9713f",
         bellyColor: "#e9cfa0",
+        snoutColor: "#5a3a20",
         eyeColor: "#141116",
         earStyle: "floppy",
-        earColor: "#4a2f18",
+        earColor: "#5a3a20",
+        drawHeadExtras: (grid) => {
+          // red collar band across the neck/chest
+          fillRect(grid, 18, 17, 3, 1.6, "#c0392b");
+        },
         drawTail: (grid) => {
-          fillRect(grid, 3, 8, 2, 5, "#a9713f");
+          fillRect(grid, 3, 10, 2.2, 4, "#a9713f");
+          fillRect(grid, 2, 8.5, 2.2, 2.4, "#a9713f");
         },
       }),
   },
@@ -285,21 +317,24 @@ export const ANIMALS: AnimalSpec[] = [
       buildMammalBody({
         bodyColor: "#f3a6b0",
         bellyColor: "#ffe1e6",
-        snoutColor: "#f3a6b0",
+        snoutColor: "#f7bcc4",
         eyeColor: "#141116",
-        earStyle: "round",
+        earStyle: "pointy",
+        earColor: "#f3a6b0",
         drawHeadExtras: (grid) => {
-          setPixel(grid, 26, 10, "#c96b78");
-          setPixel(grid, 28, 10, "#c96b78");
+          setPixel(grid, 27, 12.6, "#8a4650");
+          setPixel(grid, 28.4, 12.6, "#8a4650");
         },
         drawTail: (grid) => {
-          setPixel(grid, 4, 10, "#f3a6b0");
-          setPixel(grid, 3, 9, "#f3a6b0");
-          setPixel(grid, 4, 8.5, "#f3a6b0");
+          setPixel(grid, 4, 13, "#f3a6b0");
+          setPixel(grid, 3, 12, "#f3a6b0");
+          setPixel(grid, 4, 11.3, "#f3a6b0");
+          setPixel(grid, 5, 11, "#f3a6b0");
         },
       }),
   },
 ];
+
 
 /** Builds a chain of overlapping segment ellipses for a slithering snake/dragon, largest at the head end. */
 function buildSerpentSegments(opts: {
@@ -333,23 +368,26 @@ function buildSerpentSegments(opts: {
 }
 
 function buildRoosterBody(): Grid {
-  const grid = createGrid(32, 22);
+  const grid = createGrid(32, 26);
   const body = "#c0392b";
   const belly = "#8a2416";
-  const comb = "#f2c94c";
+  const comb = "#ff5b45";
   const beak = "#f2a71b";
-  fillEllipse(grid, 15, 12, 6.5, 5, body);
-  fillEllipse(grid, 15, 15, 4.5, 2.6, belly);
-  fillEllipse(grid, 22, 9, 4, 4, body);
-  fillRect(grid, 25.5, 9, 2, 1, beak);
-  fillRect(grid, 19.5, 3, 1, 2, comb);
-  fillRect(grid, 21, 2, 1, 3, comb);
-  fillRect(grid, 22.5, 2.5, 1, 2.5, comb);
-  fillRect(grid, 20, 11, 1, 1.5, "#c0392b");
-  setPixel(grid, 23, 8, "#141116");
-  // tail feather plume
-  fillRect(grid, 6, 6, 2, 8, "#8a2416");
-  fillRect(grid, 4, 5, 2, 8, comb);
-  fillRect(grid, 2, 6, 2, 7, body);
+  const feather1 = "#f2c94c";
+  const feather2 = "#2f9e5f";
+  fillEllipse(grid, 15, 15, 6.5, 5, body);
+  fillEllipse(grid, 15, 18, 4.5, 2.6, belly);
+  fillEllipse(grid, 22, 12, 4, 4, body);
+  fillRect(grid, 25.5, 12, 2.2, 1.2, beak);
+  fillRect(grid, 24.6, 13.6, 1.2, 2, belly);
+  fillRect(grid, 19.3, 6, 1.4, 3, comb);
+  fillRect(grid, 21, 5, 1.4, 3.5, comb);
+  fillRect(grid, 22.7, 5.5, 1.4, 3, comb);
+  setPixel(grid, 23, 11, "#141116");
+  // layered tail feathers sweeping up and back
+  fillRect(grid, 5, 7, 2.2, 10, feather2);
+  fillRect(grid, 3, 6, 2.2, 10, feather1);
+  fillRect(grid, 1, 8, 2.2, 8, body);
   return grid;
 }
+

@@ -35,30 +35,16 @@ function renderWalkOrHop(spec: AnimalSpec): string {
     </g>`;
   }
 
-  const frontLeg = legGroup(
-    FRONT_LEG_X * CELL,
-    GROUND_Y * CELL,
-    LEG_WIDTH,
-    LEG_LENGTH,
-    spec.palette.body,
-    footColor,
-    18,
-    0
-  );
-  const backLeg = legGroup(
-    BACK_LEG_X * CELL,
-    GROUND_Y * CELL,
-    LEG_WIDTH,
-    LEG_LENGTH,
-    spec.palette.body,
-    footColor,
-    18,
-    1
-  );
+  const isBiped = spec.locomotion === "biped";
+  const legWidth = isBiped ? 10 : LEG_WIDTH;
+  const legColor = isBiped ? spec.palette.accent : spec.palette.body;
+
+  const frontLeg = legGroup(FRONT_LEG_X * CELL, GROUND_Y * CELL, legWidth, LEG_LENGTH, legColor, footColor, 18, 0);
+  const backLeg = legGroup(BACK_LEG_X * CELL, GROUND_Y * CELL, legWidth, LEG_LENGTH, legColor, footColor, 18, 1);
 
   let wings = "";
-  if (spec.locomotion === "biped") {
-    wings = wingGroup(16.5 * CELL, 8 * CELL, 7 * CELL, 6 * CELL, spec.palette.accent, spec.palette.outline, 22);
+  if (isBiped) {
+    wings = wingGroup(17 * CELL, 11 * CELL, 7 * CELL, 6 * CELL, spec.palette.body, spec.palette.outline, 22);
   }
 
   return `${backLeg}${wings}${bodyRects}${frontLeg}`;

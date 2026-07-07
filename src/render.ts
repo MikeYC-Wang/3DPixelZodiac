@@ -4,10 +4,12 @@ import { gridToRects } from "./pixel/svg";
 import { CELL, GRID_W, GRID_H, GROUND_Y, FRONT_LEG_X, BACK_LEG_X } from "./pixel/mammal";
 import { legGroup, wingGroup, bounceTransform, opacitySwap, segmentUndulation } from "./pixel/limbAnimation";
 
-const LEG_LENGTH = 56;
-const LEG_WIDTH = 18;
+const LEG_LENGTH = 32;
+const LEG_WIDTH = 20;
+const LEG_OVERLAP = 6; // legs start slightly above the body's bottom edge so there's no visible seam/gap
+const MAX_LEG_LENGTH = 46;
 const CANVAS_W = GRID_W * CELL;
-const CANVAS_H = Math.max(GRID_H * CELL, GROUND_Y * CELL + LEG_LENGTH + 16);
+const CANVAS_H = Math.max(GRID_H * CELL, GROUND_Y * CELL - LEG_OVERLAP + MAX_LEG_LENGTH + 16);
 const SERPENT_CANVAS_W = SERPENT_GRID_W * CELL;
 const SERPENT_CANVAS_H = SERPENT_GRID_H * CELL;
 
@@ -16,19 +18,30 @@ function renderWalkOrHop(spec: AnimalSpec): string {
   const outlined = outlineGrid(body, spec.palette.outline);
   const bodyRects = gridToRects(outlined, {}, CELL, 0, 0);
   const footColor = spec.palette.outline;
+  const rig = spec.legRig;
+  const frontX = rig?.frontX ?? FRONT_LEG_X;
+  const backX = rig?.backX ?? BACK_LEG_X;
+  const groundY = rig?.groundY ?? GROUND_Y;
+  const legLength = rig?.length ?? LEG_LENGTH;
+  const legWidth = rig?.width ?? LEG_WIDTH;
+  const groundPx = groundY * CELL - LEG_OVERLAP;
 
   if (spec.locomotion === "hop") {
-    const extendedLegs = `<g opacity="1">${legStub(FRONT_LEG_X, footColor, spec.palette.body, 14)}${legStub(
-      BACK_LEG_X,
+    const extendedLegs = `<g opacity="1">${legStub(frontX, groundPx, legWidth, footColor, spec.palette.body, 16)}${legStub(
+      backX,
+      groundPx,
+      legWidth,
       footColor,
       spec.palette.body,
-      14
+      16
     )}${opacitySwap(true)}</g>`;
-    const tuckedLegs = `<g opacity="0">${legStub(FRONT_LEG_X, footColor, spec.palette.body, 4)}${legStub(
-      BACK_LEG_X,
+    const tuckedLegs = `<g opacity="0">${legStub(frontX, groundPx, legWidth, footColor, spec.palette.body, 5)}${legStub(
+      backX,
+      groundPx,
+      legWidth,
       footColor,
       spec.palette.body,
-      4
+      5
     )}${opacitySwap(false)}</g>`;
     return `<g>
       <g>${bodyRects}${bounceTransform(30)}</g>
@@ -38,27 +51,33 @@ function renderWalkOrHop(spec: AnimalSpec): string {
   }
 
   const isBiped = spec.locomotion === "biped";
-  const legWidth = isBiped ? 10 : LEG_WIDTH;
   const legColor = isBiped ? spec.palette.accent : spec.palette.body;
 
-  const frontLeg = legGroup(FRONT_LEG_X * CELL, GROUND_Y * CELL, legWidth, LEG_LENGTH, legColor, footColor, 18, 0);
-  const backLeg = legGroup(BACK_LEG_X * CELL, GROUND_Y * CELL, legWidth, LEG_LENGTH, legColor, footColor, 18, 1);
+  const frontLeg = legGroup(frontX * CELL, groundPx, legWidth, legLength, legColor, footColor, 18, 0);
+  const backLeg = legGroup(backX * CELL, groundPx, legWidth, legLength, legColor, footColor, 18, 1);
 
   let wings = "";
-  if (isBiped) {
+  if (isBiped && spec.wings) {
     wings = wingGroup(17 * CELL, 11 * CELL, 7 * CELL, 6 * CELL, spec.palette.body, spec.palette.outline, 22);
   }
 
   return `${backLeg}${wings}${bodyRects}${frontLeg}`;
 }
 
-function legStub(x: number, footColor: string, bodyColor: string, lengthPx: number): string {
+function legStub(
+  x: number,
+  groundPx: number,
+  width: number,
+  footColor: string,
+  bodyColor: string,
+  lengthPx: number
+): string {
   const px = x * CELL;
-  const py = GROUND_Y * CELL;
-  return `<rect x="${px - LEG_WIDTH / 2}" y="${py}" width="${LEG_WIDTH}" height="${lengthPx}" fill="${bodyColor}"/><rect x="${
-    px - LEG_WIDTH / 2
-  }" y="${py + lengthPx - 5}" width="${LEG_WIDTH}" height="5" fill="${footColor}"/>`;
+  return `<rect x="${px - width / 2}" y="${groundPx}" width="${width}" height="${lengthPx}" fill="${bodyColor}"/><rect x="${
+    px - width / 2
+  }" y="${groundPx + lengthPx - 5}" width="${width}" height="5" fill="${footColor}"/>`;
 }
+
 
 const SERPENT_BAND_WIDTH = 2; // cells per animated column band
 

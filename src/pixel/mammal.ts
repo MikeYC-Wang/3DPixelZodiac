@@ -89,36 +89,50 @@ function drawEars(
       fillWedge(grid, HEAD.cx + 2.5, top, 3.5, 6, earColor, "up-left");
       break;
     case "long":
-      // rabbit: tall ears reaching all the way to the top of the canvas
-      fillRect(grid, HEAD.cx - 3.5, top - 6, 2.4, 11, earColor);
-      fillRect(grid, HEAD.cx + 3.5, top - 6, 2.4, 11, earColor);
-      fillRect(grid, HEAD.cx - 3.1, top - 4, 1.6, 8, hornColor);
-      fillRect(grid, HEAD.cx + 3.9, top - 4, 1.6, 8, hornColor);
+      // rabbit: ears reaching above the head, proportional to the body (not towering over it)
+      fillRect(grid, HEAD.cx - 3.5, top - 2, 2.2, 7, earColor);
+      fillRect(grid, HEAD.cx + 3.5, top - 2, 2.2, 7, earColor);
+      fillRect(grid, HEAD.cx - 3.1, top - 0.5, 1.4, 5, hornColor);
+      fillRect(grid, HEAD.cx + 3.9, top - 0.5, 1.4, 5, hornColor);
       break;
     case "floppy":
       // dog: big ears hanging down past the jaw line
       fillRect(grid, HEAD.cx - 5, top + 3, 2.6, 8, earColor);
       fillRect(grid, HEAD.cx + 4.5, top + 3, 2.6, 8, earColor);
       break;
-    case "horns-curved":
-      // ox: thick horns curving outward and up from the sides of the head
-      fillRect(grid, HEAD.cx - 5.5, top + 4, 2.4, 2.2, hornColor);
-      fillRect(grid, HEAD.cx - 6.5, top + 1.5, 2.4, 3, hornColor);
-      fillRect(grid, HEAD.cx - 5.5, top - 0.5, 2.4, 2.6, hornColor);
-      fillRect(grid, HEAD.cx + 4, top + 3.5, 2.4, 2.2, hornColor);
-      fillRect(grid, HEAD.cx + 5, top + 1, 2.4, 3, hornColor);
-      fillRect(grid, HEAD.cx + 4.2, top - 1, 2.4, 2.6, hornColor);
+    case "horns-curved": {
+      // ox: thick horns curving outward and up in a visible hook, not just a straight stack
+      const bx = HEAD.cx - 4.5;
+      const by = top + 5;
+      fillRect(grid, bx, by, 2.6, 2.4, hornColor);
+      fillRect(grid, bx - 1.2, by - 2, 2.6, 2.4, hornColor);
+      fillRect(grid, bx - 1.8, by - 4, 2.4, 2.2, hornColor);
+      fillRect(grid, bx - 1, by - 5.8, 2, 2, hornColor);
+      const bx2 = HEAD.cx + 3.5;
+      fillRect(grid, bx2, by - 0.5, 2.6, 2.4, hornColor);
+      fillRect(grid, bx2 + 1.2, by - 2.5, 2.6, 2.4, hornColor);
+      fillRect(grid, bx2 + 1.6, by - 4.5, 2.4, 2.2, hornColor);
+      fillRect(grid, bx2 + 0.8, by - 6.2, 2, 2, hornColor);
       fillEllipse(grid, HEAD.cx - 1.5, top + 2.5, 1.6, 1.8, earColor);
       fillEllipse(grid, HEAD.cx + 3.5, top + 2, 1.6, 1.8, earColor);
       break;
-    case "horns-swept":
-      // goat: slim horns swept straight back
-      fillRect(grid, HEAD.cx - 1, top - 2, 2, 6, hornColor);
-      fillRect(grid, HEAD.cx - 2.5, top - 3.5, 2, 3, hornColor);
-      fillRect(grid, HEAD.cx + 2.5, top - 1.5, 2, 6, hornColor);
-      fillRect(grid, HEAD.cx + 4, top - 3, 2, 3, hornColor);
+    }
+    case "horns-swept": {
+      // goat: horns curving up and sweeping back, like a ram
+      const bx = HEAD.cx - 1;
+      const by = top + 1;
+      fillRect(grid, bx, by, 2, 2.2, hornColor);
+      fillRect(grid, bx - 1.4, by - 1.8, 2, 2.2, hornColor);
+      fillRect(grid, bx - 1.8, by - 3.8, 1.8, 2, hornColor);
+      fillRect(grid, bx - 1.2, by - 5.4, 1.6, 1.8, hornColor);
+      const bx2 = HEAD.cx + 2.5;
+      fillRect(grid, bx2, by - 0.5, 2, 2.2, hornColor);
+      fillRect(grid, bx2 + 1.6, by - 2.2, 2, 2.2, hornColor);
+      fillRect(grid, bx2 + 2.2, by - 4.2, 1.8, 2, hornColor);
+      fillRect(grid, bx2 + 1.8, by - 5.8, 1.6, 1.8, hornColor);
       fillRect(grid, HEAD.cx - 4.5, top + 4, 2, 4, earColor);
       fillRect(grid, HEAD.cx + 6, top + 3.5, 2, 4, earColor);
       break;
+    }
   }
 }

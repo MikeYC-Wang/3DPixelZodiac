@@ -1,5 +1,6 @@
 import { Grid, createGrid, fillEllipse, fillRect, setPixel } from "./pixel/grid";
 import { buildMammalBody } from "./pixel/mammal";
+import { SerpentPoint, drawSerpentTube, drawSerpentMarkings } from "./pixel/serpent";
 
 export type Lang = "zh" | "en" | "ja" | "ko";
 export type Locomotion = "walk" | "hop" | "biped" | "slither";
@@ -12,16 +13,8 @@ export interface Palette {
   eye: string;
 }
 
-export interface SegmentDef {
-  cx: number;
-  cy: number;
-  rx: number;
-  ry: number;
-  color: string;
-  isHead?: boolean;
-  /** Extra local details (horns/eye/tongue/...) drawn onto this segment's own small grid, in local coords. */
-  extra?: (grid: Grid, localCx: number, localCy: number) => void;
-}
+export const SERPENT_GRID_W = 38;
+export const SERPENT_GRID_H = 22;
 
 export interface AnimalSpec {
   key: string;
@@ -31,8 +24,8 @@ export interface AnimalSpec {
   locomotion: Locomotion;
   /** walk / hop / biped: builds the torso+head silhouette (legs/wings added separately). */
   buildBody?: () => Grid;
-  /** slither (snake / dragon): each segment animates independently. */
-  segments?: SegmentDef[];
+  /** slither (snake / dragon): one continuous tube silhouette, outlined once then sliced into animated bands. */
+  buildSlitherGrid?: () => Grid;
 }
 
 const zh = (s: string) => s;
@@ -149,32 +142,32 @@ export const ANIMALS: AnimalSpec[] = [
     name: { zh: "龍", en: "Dragon", ja: "タツ", ko: "용" },
     palette: { outline: "#0d2e1c", body: "#2f9e5f", belly: "#d8f5c4", accent: "#e8c94b", eye: "#141116" },
     locomotion: "slither",
-    segments: buildSerpentSegments({
-      count: 6,
-      color: "#2f9e5f",
-      startX: 27,
-      startY: 10,
-      stepX: -4.4,
-      wave: 2.4,
-      rx: 3.3,
-      ry: 2.7,
-      shrink: 0.32,
-      headExtra: (grid, cx, cy) => {
-        // curved horns
-        fillRect(grid, cx - 2, cy - 6, 1.4, 3, "#e8c94b");
-        fillRect(grid, cx - 3, cy - 7.5, 1.4, 2, "#e8c94b");
-        fillRect(grid, cx + 2.5, cy - 6, 1.4, 3, "#e8c94b");
-        fillRect(grid, cx + 3.5, cy - 7.5, 1.4, 2, "#e8c94b");
-        // whiskers
-        fillRect(grid, cx + 4, cy + 1, 3, 0.8, "#e8c94b");
-        fillRect(grid, cx + 4, cy + 2.2, 2.4, 0.8, "#e8c94b");
-        // snout + eye
-        fillEllipse(grid, cx + 3.5, cy + 0.5, 1.6, 1.3, "#2f9e5f");
-        setPixel(grid, cx + 1.5, cy - 1, "#141116");
-        // mane spike along the back
-        fillRect(grid, cx - 1, cy - 4.5, 1.2, 2, "#e8c94b");
-      },
-    }),
+    buildSlitherGrid: () => {
+      const grid = createGrid(SERPENT_GRID_W, SERPENT_GRID_H);
+      const points: SerpentPoint[] = [
+        { x: 30, y: 11, r: 3.5 },
+        { x: 25, y: 9, r: 3.1 },
+        { x: 20, y: 12.5, r: 2.6 },
+        { x: 15, y: 9, r: 2.1 },
+        { x: 10, y: 12, r: 1.6 },
+        { x: 5.5, y: 9.5, r: 1.1 },
+        { x: 2.5, y: 11, r: 0.6 },
+      ];
+      drawSerpentTube(grid, points, "#2f9e5f");
+      drawSerpentMarkings(grid, points, "#1f7a46", 3);
+      const head = points[0];
+      // two curved horns, each a short base + back-swept tip so they read clearly against the sky
+      fillRect(grid, head.x - 2.2, head.y - 6.6, 1.5, 3.2, "#e8c94b");
+      fillRect(grid, head.x - 3.2, head.y - 8, 1.5, 2, "#e8c94b");
+      fillRect(grid, head.x + 0.8, head.y - 6.6, 1.5, 3.2, "#e8c94b");
+      fillRect(grid, head.x + 1.8, head.y - 8, 1.5, 2, "#e8c94b");
+      // snout + jaw + a single trailing whisker
+      fillEllipse(grid, head.x + 3, head.y + 1, 1.7, 1.4, "#2f9e5f");
+      fillRect(grid, head.x + 2.8, head.y + 2, 2.2, 1, "#e8c94b");
+      fillRect(grid, head.x + 3.6, head.y + 3, 3.2, 0.8, "#e8c94b");
+      setPixel(grid, head.x, head.y - 1.5, "#141116");
+      return grid;
+    },
   },
   {
     key: "snake",
@@ -182,24 +175,29 @@ export const ANIMALS: AnimalSpec[] = [
     name: { zh: "蛇", en: "Snake", ja: "ヘビ", ko: "뱀" },
     palette: { outline: "#12240f", body: "#4c9a3f", belly: "#d9e8a8", accent: "#c0392b", eye: "#141116" },
     locomotion: "slither",
-    segments: buildSerpentSegments({
-      count: 7,
-      color: "#4c9a3f",
-      startX: 28,
-      startY: 11,
-      stepX: -3.6,
-      wave: 3,
-      rx: 2.4,
-      ry: 2,
-      shrink: 0.22,
-      headExtra: (grid, cx, cy) => {
-        fillRect(grid, cx + 2, cy, 2.4, 1, "#c0392b");
-        fillRect(grid, cx + 4, cy - 0.2, 0.8, 0.6, "#c0392b");
-        fillRect(grid, cx + 4, cy + 0.6, 0.8, 0.6, "#c0392b");
-        setPixel(grid, cx + 1, cy - 1, "#141116");
-        fillRect(grid, cx - 1, cy - 1.5, 1.6, 1, "#d9e8a8");
-      },
-    }),
+    buildSlitherGrid: () => {
+      const grid = createGrid(SERPENT_GRID_W, SERPENT_GRID_H);
+      const points: SerpentPoint[] = [
+        { x: 31, y: 11, r: 2.6 },
+        { x: 27, y: 9, r: 2.3 },
+        { x: 23, y: 12.5, r: 2.0 },
+        { x: 19, y: 9, r: 1.7 },
+        { x: 15, y: 12, r: 1.4 },
+        { x: 11, y: 9.5, r: 1.1 },
+        { x: 7, y: 11.5, r: 0.8 },
+        { x: 3.5, y: 10.5, r: 0.4 },
+      ];
+      drawSerpentTube(grid, points, "#4c9a3f");
+      drawSerpentMarkings(grid, points, "#2f6e28", 2);
+      const head = points[0];
+      // forked tongue
+      fillRect(grid, head.x + 2, head.y, 2.6, 0.8, "#c0392b");
+      fillRect(grid, head.x + 4.2, head.y - 0.5, 0.9, 0.6, "#c0392b");
+      fillRect(grid, head.x + 4.2, head.y + 0.7, 0.9, 0.6, "#c0392b");
+      setPixel(grid, head.x + 0.5, head.y - 1.3, "#141116");
+      fillRect(grid, head.x - 1.5, head.y - 1.8, 1.8, 1, "#d9e8a8");
+      return grid;
+    },
   },
   {
     key: "horse",
@@ -234,11 +232,11 @@ export const ANIMALS: AnimalSpec[] = [
         bellyColor: "#ffffff",
         eyeColor: "#141116",
         earStyle: "horns-swept",
-        hornColor: "#d8cba6",
+        hornColor: "#8a7a54",
         earColor: "#efe6d6",
         drawHeadExtras: (grid) => {
-          // beard
-          fillRect(grid, 27, 15, 1.4, 2.4, "#d8cba6");
+          // beard, hanging below the chin
+          fillRect(grid, 26.5, 15, 1.8, 3.2, "#cbbfa0");
         },
         drawTail: (grid) => {
           fillEllipse(grid, 5, 15.5, 1.4, 1.4, "#efe6d6");
@@ -257,11 +255,11 @@ export const ANIMALS: AnimalSpec[] = [
         bellyColor: "#e8c9a0",
         snoutColor: "#e8c9a0",
         eyeColor: "#141116",
-        earStyle: "round",
+        earStyle: "big-round",
         earColor: "#e8c9a0",
         drawHeadExtras: (grid) => {
-          // pale face mask around the muzzle
-          fillEllipse(grid, 25.5, 12.5, 2.6, 2.4, "#e8c9a0");
+          // pale face mask covering most of the face, not just the muzzle
+          fillEllipse(grid, 24.3, 12.6, 3.6, 3.4, "#e8c9a0");
         },
         drawTail: (grid) => {
           const pts: [number, number][] = [
@@ -270,6 +268,7 @@ export const ANIMALS: AnimalSpec[] = [
             [1.3, 9],
             [2.2, 6.5],
             [4, 5.5],
+            [5.8, 5.8],
           ];
           for (const [x, y] of pts) setPixel(grid, x, y, "#8a5a3c");
         },
@@ -319,11 +318,11 @@ export const ANIMALS: AnimalSpec[] = [
         bellyColor: "#ffe1e6",
         snoutColor: "#f7bcc4",
         eyeColor: "#141116",
-        earStyle: "pointy",
-        earColor: "#f3a6b0",
+        earStyle: "small-pointed",
+        earColor: "#e88fa0",
         drawHeadExtras: (grid) => {
-          setPixel(grid, 27, 12.6, "#8a4650");
-          setPixel(grid, 28.4, 12.6, "#8a4650");
+          setPixel(grid, 27.2, 12.6, "#8a4650");
+          setPixel(grid, 28.6, 12.6, "#8a4650");
         },
         drawTail: (grid) => {
           setPixel(grid, 4, 13, "#f3a6b0");
@@ -334,38 +333,6 @@ export const ANIMALS: AnimalSpec[] = [
       }),
   },
 ];
-
-
-/** Builds a chain of overlapping segment ellipses for a slithering snake/dragon, largest at the head end. */
-function buildSerpentSegments(opts: {
-  count: number;
-  color: string;
-  startX: number;
-  startY: number;
-  stepX: number;
-  wave: number;
-  rx: number;
-  ry: number;
-  shrink: number;
-  headExtra: (grid: Grid, cx: number, cy: number) => void;
-}): SegmentDef[] {
-  const out: SegmentDef[] = [];
-  for (let i = 0; i < opts.count; i++) {
-    const cx = opts.startX + i * opts.stepX;
-    const cy = opts.startY + Math.sin(i * 1.1) * opts.wave;
-    const scale = 1 - i * opts.shrink * 0.5;
-    out.push({
-      cx,
-      cy,
-      rx: Math.max(1.4, opts.rx * scale),
-      ry: Math.max(1.2, opts.ry * scale),
-      color: opts.color,
-      isHead: i === 0,
-      extra: i === 0 ? opts.headExtra : undefined,
-    });
-  }
-  return out;
-}
 
 function buildRoosterBody(): Grid {
   const grid = createGrid(32, 26);

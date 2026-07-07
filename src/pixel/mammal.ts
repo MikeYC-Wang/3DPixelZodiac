@@ -26,7 +26,7 @@ export interface MammalOptions {
   bellyColor?: string;
   snoutColor?: string;
   eyeColor: string;
-  earStyle: "round" | "pointy" | "floppy" | "long" | "horns-curved" | "horns-swept";
+  earStyle: "round" | "pointy" | "floppy" | "long" | "horns-curved" | "horns-swept" | "big-round" | "small-pointed";
   earColor?: string;
   hornColor?: string;
   drawTail?: (grid: Grid) => void;
@@ -73,6 +73,16 @@ function drawEars(
     case "round":
       fillEllipse(grid, HEAD.cx - 2, top + 2.5, 2.2, 2.4, earColor);
       fillEllipse(grid, HEAD.cx + 3.5, top + 2, 2.2, 2.4, earColor);
+      break;
+    case "big-round":
+      // monkey: larger ears set further out from the head
+      fillEllipse(grid, HEAD.cx - 3, top + 3, 2.8, 3, earColor);
+      fillEllipse(grid, HEAD.cx + 4.5, top + 2.5, 2.8, 3, earColor);
+      break;
+    case "small-pointed":
+      // pig: small triangular ears close to the head
+      fillWedge(grid, HEAD.cx - 2.5, top + 3, 2.2, 3, earColor, "up-right");
+      fillWedge(grid, HEAD.cx + 2.8, top + 2.5, 2.2, 3, earColor, "up-left");
       break;
     case "pointy":
       fillWedge(grid, HEAD.cx - 4, top, 3.5, 6, earColor, "up-right");

@@ -91,7 +91,7 @@ export const ANIMALS: AnimalSpec[] = [
     name: { zh: "虎", en: "Tiger", ja: "トラ", ko: "호랑이" },
     palette: { outline: "#241206", body: "#f0821e", belly: "#fff3df", accent: "#000000", eye: "#141116" },
     locomotion: "walk",
-    legRig: { frontX: 20, backX: 9, length: 16, width: 14, pawColor: "#fff3df" },
+    legRig: { frontX: 20, backX: 9, length: 22, width: 14, pawColor: "#fff3df" },
     buildBody: () => buildTigerBody(),
   },
   {

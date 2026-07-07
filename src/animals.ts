@@ -94,11 +94,11 @@ export const ANIMALS: AnimalSpec[] = [
         earStyle: "small-tuft",
         hornColor: "#2a1a10",
         drawMarkings: (grid) => {
-          const onCow = ["#faf7f2", "#f0c9b8"];
-          fillEllipseMasked(grid, 9, 12.5, 3, 2.4, "#2b2b2e", onCow);
-          fillEllipseMasked(grid, 17.5, 17, 3.4, 2.6, "#2b2b2e", onCow);
-          fillEllipseMasked(grid, 6.5, 17.8, 2, 1.7, "#2b2b2e", onCow);
-          fillEllipseMasked(grid, 20.5, 10.2, 1.4, 1.3, "#2b2b2e", onCow);
+          // Keep Holstein markings as clean round blobs placed well inside the silhouette.
+          fillEllipse(grid, 10.2, 13.2, 2.6, 2.1, "#2b2b2e");
+          fillEllipse(grid, 16.8, 17.1, 2.8, 2.2, "#2b2b2e");
+          fillEllipse(grid, 7.2, 16.8, 1.8, 1.5, "#2b2b2e");
+          fillEllipse(grid, 21.2, 10.6, 1.3, 1.2, "#2b2b2e");
         },
         drawTail: (grid) => {
           const pts: SerpentPoint[] = [

@@ -43,6 +43,8 @@ export interface MammalOptions {
   drawMarkings?: (grid: Grid) => void;
   drawHeadExtras?: (grid: Grid) => void;
   headOffsetY?: number;
+  /** Scales the default snout ellipse (1 = default size); use e.g. 0.6 for a smaller/cuter nose. */
+  snoutScale?: number;
 }
 
 /** Draws the shared torso/head/snout/eye base that every mammal sprite starts from. */
@@ -59,7 +61,15 @@ export function buildMammalBody(opts: MammalOptions): Grid {
   drawEars(grid, opts.earStyle, opts.earColor ?? opts.bodyColor, opts.hornColor ?? "#e9e0cb", headCy);
 
   fillEllipse(grid, HEAD.cx, headCy, HEAD.r, HEAD.r, opts.headColor ?? opts.bodyColor);
-  fillEllipse(grid, SNOUT.cx, headCy + (SNOUT.cy - HEAD.cy), SNOUT.rx, SNOUT.ry, opts.snoutColor ?? opts.bodyColor);
+  const snoutScale = opts.snoutScale ?? 1;
+  fillEllipse(
+    grid,
+    SNOUT.cx,
+    headCy + (SNOUT.cy - HEAD.cy),
+    SNOUT.rx * snoutScale,
+    SNOUT.ry * snoutScale,
+    opts.snoutColor ?? opts.bodyColor
+  );
 
   if (opts.drawHeadExtras) opts.drawHeadExtras(grid);
   if (opts.drawMarkings) opts.drawMarkings(grid);
@@ -104,11 +114,11 @@ function drawEars(
       fillWedge(grid, HEAD.cx + 2.5, top, 3.5, 6, earColor, "up-left");
       break;
     case "long":
-      // rabbit: ears reaching above the head, proportional to the body (not towering over it)
-      fillRect(grid, HEAD.cx - 3.5, top - 2, 2.2, 7, earColor);
-      fillRect(grid, HEAD.cx + 3.5, top - 2, 2.2, 7, earColor);
-      fillRect(grid, HEAD.cx - 3.1, top - 0.5, 1.4, 5, hornColor);
-      fillRect(grid, HEAD.cx + 3.9, top - 0.5, 1.4, 5, hornColor);
+      // rabbit: white outer ear stays clearly visible with a narrower pink inner-ear stripe
+      fillRect(grid, HEAD.cx - 3.6, top - 2, 2.8, 7, earColor);
+      fillRect(grid, HEAD.cx + 3.4, top - 2, 2.8, 7, earColor);
+      fillRect(grid, HEAD.cx - 3, top - 0.5, 1.2, 4.6, hornColor);
+      fillRect(grid, HEAD.cx + 4, top - 0.5, 1.2, 4.6, hornColor);
       break;
     case "floppy":
       // dog: big ears hanging down past the jaw line

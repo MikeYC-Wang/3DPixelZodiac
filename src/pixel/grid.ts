@@ -81,6 +81,41 @@ export function fillEllipse(
   }
 }
 
+/**
+ * Same as `fillEllipse`, but only overwrites cells that are already one of `allowedColors` - use this
+ * for decorative markings (spots/patches) so they can never bleed past the base silhouette's edge,
+ * regardless of how the marking's own center/radius lines up against the body shape.
+ */
+export function fillEllipseMasked(
+  grid: Grid,
+  cx: number,
+  cy: number,
+  rx: number,
+  ry: number,
+  color: string,
+  allowedColors: string[]
+): void {
+  const allowed = new Set(allowedColors);
+  const scx = cx * SCALE;
+  const scy = cy * SCALE;
+  const srx = Math.max(0.5, rx * SCALE);
+  const sry = Math.max(0.5, ry * SCALE);
+  const minX = Math.floor(scx - srx);
+  const maxX = Math.ceil(scx + srx);
+  const minY = Math.floor(scy - sry);
+  const maxY = Math.ceil(scy + sry);
+  for (let y = minY; y <= maxY; y++) {
+    for (let x = minX; x <= maxX; x++) {
+      const nx = (x + 0.5 - scx) / srx;
+      const ny = (y + 0.5 - scy) / sry;
+      if (nx * nx + ny * ny <= 1 && inBounds(grid, x, y)) {
+        const current = grid[y][x];
+        if (current !== null && allowed.has(current)) setRaw(grid, x, y, color);
+      }
+    }
+  }
+}
+
 /** Fills a right triangle-ish wedge; used for ears/horns/spikes. dir controls which corner is pointed. */
 export function fillWedge(
   grid: Grid,

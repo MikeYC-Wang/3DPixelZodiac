@@ -1,4 +1,4 @@
-import { Grid, createGrid, fillEllipse, fillRect, setPixel } from "./pixel/grid";
+import { Grid, createGrid, fillEllipse, fillEllipseMasked, fillRect, setPixel } from "./pixel/grid";
 import { buildMammalBody, GRID_W, GRID_H } from "./pixel/mammal";
 import { SerpentPoint, drawSerpentTube, drawSerpentMarkings } from "./pixel/serpent";
 
@@ -94,10 +94,11 @@ export const ANIMALS: AnimalSpec[] = [
         earStyle: "small-tuft",
         hornColor: "#2a1a10",
         drawMarkings: (grid) => {
-          fillEllipse(grid, 9, 12.5, 3, 2.4, "#2b2b2e");
-          fillEllipse(grid, 17.5, 17, 3.4, 2.6, "#2b2b2e");
-          fillEllipse(grid, 6.5, 17.8, 2, 1.7, "#2b2b2e");
-          fillEllipse(grid, 20.5, 10.2, 1.4, 1.3, "#2b2b2e");
+          const onCow = ["#faf7f2", "#f0c9b8"];
+          fillEllipseMasked(grid, 9, 12.5, 3, 2.4, "#2b2b2e", onCow);
+          fillEllipseMasked(grid, 17.5, 17, 3.4, 2.6, "#2b2b2e", onCow);
+          fillEllipseMasked(grid, 6.5, 17.8, 2, 1.7, "#2b2b2e", onCow);
+          fillEllipseMasked(grid, 20.5, 10.2, 1.4, 1.3, "#2b2b2e", onCow);
         },
         drawTail: (grid) => {
           const pts: SerpentPoint[] = [
@@ -134,6 +135,7 @@ export const ANIMALS: AnimalSpec[] = [
         earStyle: "long",
         earColor: "#f6f1e9",
         hornColor: "#f2a6c1",
+        snoutScale: 0.6,
         drawTail: (grid) => {
           fillEllipse(grid, 5, 16, 1.8, 1.8, "#ffffff");
         },
@@ -149,7 +151,7 @@ export const ANIMALS: AnimalSpec[] = [
     buildSlitherGrid: () => {
       const grid = createGrid(SERPENT_GRID_W, SERPENT_GRID_H);
       const points: SerpentPoint[] = [
-        { x: 30, y: 11, r: 3.5 },
+        { x: 30, y: 11, r: 4 },
         { x: 25, y: 10.5, r: 3.1 },
         { x: 20, y: 11.5, r: 2.6 },
         { x: 15, y: 10.5, r: 2.1 },
@@ -158,17 +160,18 @@ export const ANIMALS: AnimalSpec[] = [
         { x: 2.5, y: 11, r: 0.6 },
       ];
       drawSerpentTube(grid, points, "#2f9e5f");
-      drawSerpentMarkings(grid, points, "#1f7a46", 3);
       const head = points[0];
-      // two curved horns, each a short base + back-swept tip so they read clearly against the sky
-      fillRect(grid, head.x - 2.2, head.y - 6.6, 1.5, 3.2, "#e8c94b");
-      fillRect(grid, head.x - 3.2, head.y - 8, 1.5, 2, "#e8c94b");
-      fillRect(grid, head.x + 0.8, head.y - 6.6, 1.5, 3.2, "#e8c94b");
-      fillRect(grid, head.x + 1.8, head.y - 8, 1.5, 2, "#e8c94b");
+      // two thick curved horns, each a wide base + back-swept tip so they read clearly as horns
+      fillRect(grid, head.x - 2.6, head.y - 7, 2, 3.6, "#e8c94b");
+      fillRect(grid, head.x - 3.8, head.y - 8.6, 2, 2.2, "#e8c94b");
+      fillRect(grid, head.x + 0.6, head.y - 7, 2, 3.6, "#e8c94b");
+      fillRect(grid, head.x + 1.8, head.y - 8.6, 2, 2.2, "#e8c94b");
+      // brow ridge above the eye, for a bit more face definition
+      fillRect(grid, head.x - 1.5, head.y - 2.4, 2.4, 0.9, "#1f7a46");
       // snout + jaw + a single trailing whisker
-      fillEllipse(grid, head.x + 3, head.y + 1, 1.7, 1.4, "#2f9e5f");
-      fillRect(grid, head.x + 2.8, head.y + 2, 2.2, 1, "#e8c94b");
-      fillRect(grid, head.x + 3.6, head.y + 3, 3.2, 0.8, "#e8c94b");
+      fillEllipse(grid, head.x + 3.2, head.y + 1, 1.8, 1.5, "#2f9e5f");
+      fillRect(grid, head.x + 3, head.y + 2.1, 2.4, 1, "#e8c94b");
+      fillRect(grid, head.x + 3.8, head.y + 3.2, 3.2, 0.8, "#e8c94b");
       setPixel(grid, head.x, head.y - 1.5, "#141116");
       return grid;
     },
@@ -193,7 +196,7 @@ export const ANIMALS: AnimalSpec[] = [
         { x: 3.5, y: 10.3, r: 0.4 },
       ];
       drawSerpentTube(grid, points, "#4c9a3f");
-      drawSerpentMarkings(grid, points, "#e8e2a0", 2);
+      drawSerpentMarkings(grid, points, "#e8e2a0", 4);
       const head = points[0];
       // forked tongue
       fillRect(grid, head.x + 2, head.y, 2.6, 0.8, "#c0392b");
@@ -288,9 +291,9 @@ export const ANIMALS: AnimalSpec[] = [
         eyeColor: "#141116",
         earStyle: "pointy",
         earColor: "#d9822b",
+        snoutScale: 0.8,
         drawHeadExtras: (grid) => {
-          // pale cheek/muzzle-underside marking (urajiro) and a small brow accent
-          fillEllipse(grid, 26.4, 14, 2.2, 1.6, "#fdf6ea");
+          // small brow accent only - the white snout already reads as the urajiro muzzle marking
           setPixel(grid, 24.2, 9.6, "#fdf6ea");
         },
         drawTail: (grid) => {
@@ -357,27 +360,27 @@ function buildTigerBody(): Grid {
   fillEllipse(grid, 20.2, 22.5, 1.9, 1.6, white);
   setPixel(grid, 11.4, 22.5, stripe);
   setPixel(grid, 20.6, 22.5, stripe);
-  // tail curling out from behind, over the right side
+  // tail curling out from behind, staying below the head/ears (chest height, not up by the face)
   const tailPts: SerpentPoint[] = [
     { x: 23, y: 19, r: 1.6 },
-    { x: 26.2, y: 17.2, r: 1.4 },
-    { x: 27.6, y: 14, r: 1.2 },
-    { x: 26.5, y: 11, r: 1.0 },
+    { x: 25.8, y: 17.6, r: 1.4 },
+    { x: 27, y: 15.6, r: 1.2 },
+    { x: 26, y: 13.8, r: 1.0 },
   ];
   drawSerpentTube(grid, tailPts, body);
-  fillRect(grid, 25.6, 11.6, 1.6, 1.2, stripe);
-  fillEllipse(grid, 26.3, 10.4, 1, 1, stripe);
+  fillRect(grid, 25.2, 14.3, 1.6, 1.2, stripe);
+  fillEllipse(grid, 25.9, 13.1, 1, 1, stripe);
   // head, centered above the torso, facing the viewer
   fillEllipse(grid, 16, 8.2, 6, 6, body);
-  fillEllipse(grid, 9.6, 4.4, 2.8, 2.8, body);
-  fillEllipse(grid, 22.4, 4.4, 2.8, 2.8, body);
-  fillEllipse(grid, 9.4, 2.6, 1.4, 1.4, stripe);
-  fillEllipse(grid, 22.6, 2.6, 1.4, 1.4, stripe);
-  // forehead stripes
-  fillRect(grid, 11.6, 2.6, 1.3, 3.4, stripe);
-  fillRect(grid, 14.6, 2.2, 1.3, 3.8, stripe);
-  fillRect(grid, 18.1, 2.2, 1.3, 3.8, stripe);
-  fillRect(grid, 21.1, 2.6, 1.3, 3.4, stripe);
+  fillEllipse(grid, 8, 4.6, 2.8, 2.8, body);
+  fillEllipse(grid, 24, 4.6, 2.8, 2.8, body);
+  fillEllipse(grid, 8, 2.1, 0.9, 0.9, stripe);
+  fillEllipse(grid, 24, 2.1, 0.9, 0.9, stripe);
+  // forehead stripes, kept clear of the ears on either side
+  fillRect(grid, 11.5, 2.6, 1.2, 3.4, stripe);
+  fillRect(grid, 14.3, 2.2, 1.2, 3.8, stripe);
+  fillRect(grid, 17.1, 2.2, 1.2, 3.8, stripe);
+  fillRect(grid, 19.9, 2.6, 1.2, 3.4, stripe);
   // white muzzle + cheek stripes + nose
   fillEllipse(grid, 16, 11.2, 4.2, 3.4, white);
   fillRect(grid, 10.8, 9.8, 1.1, 2.2, stripe);

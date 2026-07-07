@@ -90,8 +90,8 @@ export const ANIMALS: AnimalSpec[] = [
     order: 2,
     name: { zh: "虎", en: "Tiger", ja: "トラ", ko: "호랑이" },
     palette: { outline: "#241206", body: "#f0821e", belly: "#fff3df", accent: "#000000", eye: "#141116" },
-    locomotion: "biped",
-    legRig: { frontX: 13, backX: 19, groundY: 24, length: 16, width: 14, pawColor: "#fff3df" },
+    locomotion: "walk",
+    legRig: { frontX: 20, backX: 9, length: 16, width: 14, pawColor: "#fff3df" },
     buildBody: () => buildTigerBody(),
   },
   {
@@ -308,58 +308,76 @@ export const ANIMALS: AnimalSpec[] = [
   },
 ];
 
-/** Tiger faces the viewer (front-facing, symmetric) rather than side-view, like the monkey. */
 function buildTigerBody(): Grid {
-  const grid = createGrid(GRID_W, GRID_H);
   const body = "#f0821e";
   const stripe = "#000000";
   const white = "#fff3df";
-  // torso
-  fillEllipse(grid, 16, 18, 7.5, 6.5, body);
-  fillEllipse(grid, 16, 20.5, 4.5, 4, white);
-  // body stripes flanking the white belly patch
-  fillRect(grid, 9.5, 13.5, 1.4, 8, stripe);
-  fillRect(grid, 12.2, 12.8, 1.4, 9, stripe);
-  fillRect(grid, 18.4, 12.8, 1.4, 9, stripe);
-  fillRect(grid, 21.1, 13.5, 1.4, 8, stripe);
-  // front paws resting together
-  fillEllipse(grid, 11.8, 22.5, 1.9, 1.6, white);
-  fillEllipse(grid, 20.2, 22.5, 1.9, 1.6, white);
-  setPixel(grid, 11.4, 22.5, stripe);
-  setPixel(grid, 20.6, 22.5, stripe);
-  // tail curling out from behind, staying below the head/ears (chest height, not up by the face)
+  const grid = createGrid(GRID_W, GRID_H);
+
+  // side-view torso with strong chest and tighter belly
+  fillEllipse(grid, 14.3, 14.9, 8.8, 5.2, body);
+  fillEllipse(grid, 18.6, 13.6, 3.5, 2.9, body);
+  fillEllipse(grid, 13.4, 17.7, 4.9, 2.4, white);
+
+  // tiger head profile with broader skull, clear cheek/chin pads, and stronger eye area
+  fillEllipse(grid, 24.1, 11.4, 4.9, 4, body);
+  fillEllipse(grid, 27.3, 12.6, 2.3, 1.8, white);
+  fillEllipse(grid, 25.7, 13.8, 2.3, 1.5, white);
+  fillRect(grid, 24.2, 9.7, 1.5, 0.7, stripe); // brow ridge
+  setPixel(grid, 24.2, 10.5, white);
+  setPixel(grid, 24.8, 10.6, "#141116");
+  fillRect(grid, 28.7, 12.2, 0.9, 0.8, stripe);
+  setPixel(grid, 29, 13.1, stripe);
+
+  // triangular ears (orange shell + white inner + black tip)
+  fillRect(grid, 21.2, 6.2, 1.6, 1.7, body);
+  fillRect(grid, 21.5, 6.6, 0.8, 0.9, white);
+  fillRect(grid, 21.4, 5.8, 0.9, 0.6, stripe);
+  fillRect(grid, 24.6, 5.9, 1.6, 1.7, body);
+  fillRect(grid, 24.9, 6.3, 0.8, 0.9, white);
+  fillRect(grid, 24.8, 5.5, 0.9, 0.6, stripe);
+
+  // forehead stripes as a smaller "王" pattern, kept above the eye line
+  fillRect(grid, 22.3, 6.8, 3.8, 0.7, stripe); // top bar
+  fillRect(grid, 22.6, 8, 3.2, 0.7, stripe); // middle bar
+  fillRect(grid, 22.9, 9, 2.5, 0.6, stripe); // bottom bar
+  fillRect(grid, 24.1, 6.7, 0.7, 3, stripe); // center vertical
+
+  // tiger flank stripes: angled/tapered slashes instead of straight vertical bars
+  // shoulder slash
+  fillRect(grid, 9.1, 10.8, 1.6, 1.1, stripe);
+  fillRect(grid, 9.6, 11.9, 1.4, 1.1, stripe);
+  fillRect(grid, 10.1, 13, 1.1, 1, stripe);
+  setPixel(grid, 10.8, 13.9, stripe);
+  // mid-back slash
+  fillRect(grid, 12.1, 10.4, 1.7, 1.1, stripe);
+  fillRect(grid, 12.7, 11.5, 1.5, 1.1, stripe);
+  fillRect(grid, 13.3, 12.6, 1.2, 1, stripe);
+  setPixel(grid, 14, 13.4, stripe);
+  // rib slash
+  fillRect(grid, 15.2, 10.8, 1.6, 1.1, stripe);
+  fillRect(grid, 15.8, 11.9, 1.3, 1.1, stripe);
+  fillRect(grid, 16.3, 13, 1.1, 0.9, stripe);
+  setPixel(grid, 17, 13.8, stripe);
+  // rear hip slash
+  fillRect(grid, 18, 11.3, 1.4, 1.1, stripe);
+  fillRect(grid, 18.5, 12.4, 1.1, 1, stripe);
+  setPixel(grid, 19.1, 13.2, stripe);
+  // keep belly clean white (no isolated black dots)
+
+  // lifted thick tail with dark bands
   const tailPts: SerpentPoint[] = [
-    { x: 23, y: 19, r: 1.6 },
-    { x: 25.8, y: 17.6, r: 1.4 },
-    { x: 27, y: 15.6, r: 1.2 },
-    { x: 26, y: 13.8, r: 1.0 },
+    { x: 5, y: 14, r: 1.2 },
+    { x: 3.3, y: 12.4, r: 1.1 },
+    { x: 2.9, y: 10.5, r: 1.0 },
+    { x: 4.1, y: 9, r: 0.9 },
+    { x: 5.7, y: 8.9, r: 0.8 },
   ];
   drawSerpentTube(grid, tailPts, body);
-  fillRect(grid, 25.2, 14.3, 1.6, 1.2, stripe);
-  fillEllipse(grid, 25.9, 13.1, 1, 1, stripe);
-  // head, centered above the torso, facing the viewer
-  fillEllipse(grid, 16, 8.2, 6, 6, body);
-  fillEllipse(grid, 8, 4.6, 2.8, 2.8, body);
-  fillEllipse(grid, 24, 4.6, 2.8, 2.8, body);
-  fillEllipse(grid, 8, 2.1, 0.9, 0.9, stripe);
-  fillEllipse(grid, 24, 2.1, 0.9, 0.9, stripe);
-  // forehead stripes, kept clear of the ears on either side
-  fillRect(grid, 11.5, 2.6, 1.2, 3.4, stripe);
-  fillRect(grid, 14.3, 2.2, 1.2, 3.8, stripe);
-  fillRect(grid, 17.1, 2.2, 1.2, 3.8, stripe);
-  fillRect(grid, 19.9, 2.6, 1.2, 3.4, stripe);
-  // white muzzle + cheek stripes + nose
-  fillEllipse(grid, 16, 11.2, 4.2, 3.4, white);
-  fillRect(grid, 10.8, 9.8, 1.1, 2.2, stripe);
-  fillRect(grid, 20.1, 9.8, 1.1, 2.2, stripe);
-  fillRect(grid, 15.2, 10.4, 1.6, 1.2, stripe);
-  // fangs peeking out from the muzzle, and angled fierce brows above each eye
-  fillRect(grid, 13.6, 12.6, 0.9, 1.3, white);
-  fillRect(grid, 17.5, 12.6, 0.9, 1.3, white);
-  fillRect(grid, 12, 6.6, 2, 0.9, stripe);
-  fillRect(grid, 18, 6.6, 2, 0.9, stripe);
-  setPixel(grid, 12.8, 7.6, "#141116");
-  setPixel(grid, 19.2, 7.6, "#141116");
+  fillRect(grid, 2.9, 11.8, 1.1, 0.9, stripe);
+  fillRect(grid, 3.1, 9.9, 1.1, 0.9, stripe);
+  fillEllipse(grid, 5.8, 8.8, 0.8, 0.8, stripe);
+
   return grid;
 }
 

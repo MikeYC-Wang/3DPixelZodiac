@@ -58,14 +58,14 @@ export const ANIMALS: AnimalSpec[] = [
         earStyle: "round",
         earColor: "#8d8a94",
         drawTail: (grid) => {
-          const pts: [number, number][] = [
-            [6, 15],
-            [4, 16],
-            [2, 15.5],
-            [0.5, 14],
+          const pts: SerpentPoint[] = [
+            { x: 6, y: 15, r: 0.9 },
+            { x: 4, y: 16, r: 0.7 },
+            { x: 2, y: 15.5, r: 0.6 },
+            { x: 0.5, y: 14, r: 0.5 },
           ];
-          for (const [x, y] of pts) setPixel(grid, x, y, "#8d8a94");
-          setPixel(grid, 0, 13.5, "#e8a9b8");
+          drawSerpentTube(grid, pts, "#8d8a94");
+          fillEllipse(grid, 0, 13.3, 0.8, 0.8, "#e8a9b8");
         },
       }),
   },
@@ -265,7 +265,7 @@ export const ANIMALS: AnimalSpec[] = [
     key: "monkey",
     order: 8,
     name: { zh: "猴", en: "Monkey", ja: "サル", ko: "원숭이" },
-    palette: { outline: "#241a10", body: "#8a5a3c", belly: "#e8c9a0", accent: "#e8c9a0", eye: "#141116" },
+    palette: { outline: "#241a10", body: "#8a5a3c", belly: "#e8c9a0", accent: "#8a5a3c", eye: "#141116" },
     locomotion: "biped",
     legRig: { frontX: 13, backX: 19, groundY: 22, length: 20, width: 16 },
     buildBody: () => buildMonkeyBody(),
@@ -284,25 +284,33 @@ export const ANIMALS: AnimalSpec[] = [
     key: "dog",
     order: 10,
     name: { zh: "狗", en: "Dog", ja: "イヌ", ko: "개" },
-    palette: { outline: "#241a10", body: "#a9713f", belly: "#e9cfa0", accent: "#c0392b", eye: "#141116" },
+    palette: { outline: "#2a1a0c", body: "#d9822b", belly: "#fdf6ea", accent: "#fdf6ea", eye: "#141116" },
     locomotion: "walk",
     buildBody: () =>
       buildMammalBody({
-        bodyColor: "#a9713f",
-        bellyColor: "#e9cfa0",
-        snoutColor: "#5a3a20",
+        // shiba inu: warm red/tan coat, cream "urajiro" markings, upright pointed ears, curled tail
+        bodyColor: "#d9822b",
+        bellyColor: "#fdf6ea",
+        snoutColor: "#fdf6ea",
         eyeColor: "#141116",
-        earStyle: "floppy",
-        earColor: "#5a3a20",
+        earStyle: "pointy",
+        earColor: "#d9822b",
         drawHeadExtras: (grid) => {
-          // longer muzzle than the round mammal default, to read clearly as a dog snout
-          fillRect(grid, 29, 12.3, 2.2, 1.8, "#5a3a20");
-          // red collar band across the neck/chest
-          fillRect(grid, 18, 17, 3, 1.6, "#c0392b");
+          // pale cheek/muzzle-underside marking (urajiro) and a small brow accent
+          fillEllipse(grid, 26.4, 14, 2.2, 1.6, "#fdf6ea");
+          setPixel(grid, 24.2, 9.6, "#fdf6ea");
         },
         drawTail: (grid) => {
-          fillRect(grid, 3, 10, 2.2, 4, "#a9713f");
-          fillRect(grid, 2, 8.5, 2.2, 2.4, "#a9713f");
+          // tail curling up and over the back, spitz-style, with a fluffy cream tip
+          const pts: SerpentPoint[] = [
+            { x: 3, y: 13.5, r: 1.5 },
+            { x: 1.2, y: 11.2, r: 1.3 },
+            { x: 1.3, y: 8.5, r: 1.2 },
+            { x: 3.2, y: 6.8, r: 1.1 },
+            { x: 5.5, y: 7, r: 0.9 },
+          ];
+          drawSerpentTube(grid, pts, "#d9822b");
+          fillEllipse(grid, 5.5, 7, 1, 1, "#fdf6ea");
         },
       }),
   },
@@ -325,10 +333,13 @@ export const ANIMALS: AnimalSpec[] = [
           setPixel(grid, 28.6, 12.6, "#8a4650");
         },
         drawTail: (grid) => {
-          setPixel(grid, 4, 13, "#f3a6b0");
-          setPixel(grid, 3, 12, "#f3a6b0");
-          setPixel(grid, 4, 11.3, "#f3a6b0");
-          setPixel(grid, 5, 11, "#f3a6b0");
+          const pts: SerpentPoint[] = [
+            { x: 4, y: 13, r: 0.9 },
+            { x: 3, y: 12, r: 0.8 },
+            { x: 4, y: 11.3, r: 0.7 },
+            { x: 5, y: 11, r: 0.6 },
+          ];
+          drawSerpentTube(grid, pts, "#f3a6b0");
         },
       }),
   },
@@ -348,19 +359,24 @@ function buildMonkeyBody(): Grid {
   fillEllipse(grid, 10.8, 19.2, 1.4, 1.4, face);
   fillEllipse(grid, 21, 19.2, 1.4, 1.4, face);
   // tail curling up from behind the body and over the back
-  const tailPts: [number, number][] = [
-    [20.5, 13],
-    [22.5, 10.5],
-    [23, 7],
-    [21, 4.5],
-    [18.3, 4.5],
+  const tailPts: SerpentPoint[] = [
+    { x: 20.5, y: 13, r: 1.3 },
+    { x: 22.5, y: 10.5, r: 1.2 },
+    { x: 23, y: 7, r: 1.1 },
+    { x: 21, y: 4.5, r: 1.0 },
+    { x: 18.3, y: 4.5, r: 0.9 },
   ];
-  for (const [x, y] of tailPts) setPixel(grid, x, y, body);
+  drawSerpentTube(grid, tailPts, body);
   // head, centered above the torso
   fillEllipse(grid, 16, 7.2, 4.2, 4.2, body);
-  fillEllipse(grid, 11.4, 6.8, 2.3, 2.5, face);
-  fillEllipse(grid, 20.6, 6.8, 2.3, 2.5, face);
-  fillEllipse(grid, 16, 8.2, 3, 2.8, face);
+  // ears are mostly body-colored on the outside, with a smaller inner-ear patch,
+  // and are pushed further out so they don't touch the central face patch -
+  // otherwise the same-colored regions fuse into one blob with no outline between them
+  fillEllipse(grid, 10.6, 6.8, 2.2, 2.4, body);
+  fillEllipse(grid, 21.4, 6.8, 2.2, 2.4, body);
+  fillEllipse(grid, 10.8, 7, 1.1, 1.3, face);
+  fillEllipse(grid, 21.2, 7, 1.1, 1.3, face);
+  fillEllipse(grid, 16, 8.2, 2.5, 2.3, face);
   setPixel(grid, 14.3, 7, "#141116");
   setPixel(grid, 17.7, 7, "#141116");
   return grid;

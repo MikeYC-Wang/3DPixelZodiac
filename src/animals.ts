@@ -35,6 +35,12 @@ export interface AnimalSpec {
   buildBody?: () => Grid;
   /** slither (snake / dragon): one continuous tube silhouette, outlined once then sliced into animated bands. */
   buildSlitherGrid?: () => Grid;
+  /**
+   * slither only: how many logical columns from the RIGHT edge (the head end) stay as one rigid,
+   * non-animated piece - keeps the head/horns/face from being chopped into wiggling slices. Only the
+   * body/tail to the left of this cutoff undulates.
+   */
+  headStaticWidth?: number;
   /** Overrides the shared quadruped leg anchor points/size (used by the rooster and monkey's custom bodies). */
   legRig?: LegRigOverride;
   /** biped only: also draws a flapping wing (rooster). Monkey (also biped) draws its arms directly in the body grid instead. */
@@ -74,25 +80,32 @@ export const ANIMALS: AnimalSpec[] = [
     key: "ox",
     order: 1,
     name: { zh: "牛", en: "Ox", ja: "ウシ", ko: "소" },
-    palette: { outline: "#241a10", body: "#8a5a3a", belly: "#e8c9a0", accent: "#f0c9b8", eye: "#141116" },
+    palette: { outline: "#241a10", body: "#faf7f2", belly: "#ffffff", accent: "#2b2b2e", eye: "#141116" },
     locomotion: "walk",
-    legRig: { frontX: 20, backX: 9, pawColor: "#e8c9a0" },
+    legRig: { frontX: 20, backX: 9, pawColor: "#ffffff" },
     buildBody: () =>
       buildMammalBody({
-        bodyColor: "#8a5a3a",
+        // dairy cow: white coat with black Holstein-style patches
+        bodyColor: "#faf7f2",
         headColor: "#f0c9b8",
-        bellyColor: "#e8c9a0",
+        bellyColor: "#ffffff",
         snoutColor: "#f0c9b8",
         eyeColor: "#141116",
         earStyle: "small-tuft",
         hornColor: "#2a1a10",
+        drawMarkings: (grid) => {
+          fillEllipse(grid, 9, 12.5, 3, 2.4, "#2b2b2e");
+          fillEllipse(grid, 17.5, 17, 3.4, 2.6, "#2b2b2e");
+          fillEllipse(grid, 6.5, 17.8, 2, 1.7, "#2b2b2e");
+          fillEllipse(grid, 20.5, 10.2, 1.4, 1.3, "#2b2b2e");
+        },
         drawTail: (grid) => {
           const pts: SerpentPoint[] = [
             { x: 4.5, y: 15.5, r: 0.7 },
             { x: 3, y: 17.5, r: 0.6 },
             { x: 2.4, y: 19.5, r: 0.6 },
           ];
-          drawSerpentTube(grid, pts, "#8a5a3a");
+          drawSerpentTube(grid, pts, "#faf7f2");
           fillEllipse(grid, 2, 20.3, 0.9, 0.9, "#2a1a10");
         },
       }),
@@ -102,37 +115,9 @@ export const ANIMALS: AnimalSpec[] = [
     order: 2,
     name: { zh: "虎", en: "Tiger", ja: "トラ", ko: "호랑이" },
     palette: { outline: "#241206", body: "#f0821e", belly: "#fff3df", accent: "#000000", eye: "#141116" },
-    locomotion: "walk",
-    legRig: { frontX: 20, backX: 9, pawColor: "#fff3df" },
-    buildBody: () =>
-      buildMammalBody({
-        bodyColor: "#f0821e",
-        bellyColor: "#fff3df",
-        eyeColor: "#141116",
-        earStyle: "pointy",
-        earColor: "#f0821e",
-        drawHeadExtras: (grid) => {
-          // black ear tips + face stripes
-          fillRect(grid, 19, 4, 2, 2, "#000000");
-          fillRect(grid, 25.5, 3.5, 2, 2, "#000000");
-          fillRect(grid, 22, 9, 1, 2, "#000000");
-          fillRect(grid, 25, 9, 1, 2, "#000000");
-        },
-        drawMarkings: (grid) => {
-          const stripes: [number, number, number][] = [
-            [8, 11, 3],
-            [11, 10, 4],
-            [14, 11, 4],
-            [17, 10, 4],
-            [20, 11, 3],
-          ];
-          for (const [x, y, h] of stripes) fillRect(grid, x, y, 2, h, "#000000");
-        },
-        drawTail: (grid) => {
-          fillRect(grid, 2, 13, 4, 1.5, "#f0821e");
-          fillRect(grid, 1, 12, 1.5, 2, "#000000");
-        },
-      }),
+    locomotion: "biped",
+    legRig: { frontX: 13, backX: 19, groundY: 24, length: 16, width: 14, pawColor: "#fff3df" },
+    buildBody: () => buildTigerBody(),
   },
   {
     key: "rabbit",
@@ -160,6 +145,7 @@ export const ANIMALS: AnimalSpec[] = [
     name: { zh: "龍", en: "Dragon", ja: "タツ", ko: "용" },
     palette: { outline: "#0d2e1c", body: "#2f9e5f", belly: "#d8f5c4", accent: "#e8c94b", eye: "#141116" },
     locomotion: "slither",
+    headStaticWidth: 13,
     buildSlitherGrid: () => {
       const grid = createGrid(SERPENT_GRID_W, SERPENT_GRID_H);
       const points: SerpentPoint[] = [
@@ -193,6 +179,7 @@ export const ANIMALS: AnimalSpec[] = [
     name: { zh: "蛇", en: "Snake", ja: "ヘビ", ko: "뱀" },
     palette: { outline: "#12240f", body: "#4c9a3f", belly: "#d9e8a8", accent: "#c0392b", eye: "#141116" },
     locomotion: "slither",
+    headStaticWidth: 11,
     buildSlitherGrid: () => {
       const grid = createGrid(SERPENT_GRID_W, SERPENT_GRID_H);
       const points: SerpentPoint[] = [
@@ -230,6 +217,14 @@ export const ANIMALS: AnimalSpec[] = [
         bellyColor: "#e8c79a",
         eyeColor: "#141116",
         earStyle: "pointy",
+        drawHeadExtras: (grid) => {
+          // a light mane tracing the neck (not a big blocky poof), plus a longer horse-like nose
+          fillRect(grid, 17.5, 5.4, 5.5, 1.4, "#3b2412");
+          fillRect(grid, 16, 7, 1.8, 4.5, "#3b2412");
+          fillRect(grid, 21.6, 6.6, 1.4, 1.8, "#3b2412");
+          fillRect(grid, 29.6, 12.7, 1.8, 1.5, "#b06a35");
+          setPixel(grid, 30.5, 13.2, "#3b2412");
+        },
         drawTail: (grid) => {
           fillRect(grid, 1.5, 12, 2.6, 5, "#3b2412");
           fillRect(grid, 1, 16.5, 2.2, 5, "#3b2412");
@@ -342,6 +337,56 @@ export const ANIMALS: AnimalSpec[] = [
       }),
   },
 ];
+
+/** Tiger faces the viewer (front-facing, symmetric) rather than side-view, like the monkey. */
+function buildTigerBody(): Grid {
+  const grid = createGrid(GRID_W, GRID_H);
+  const body = "#f0821e";
+  const stripe = "#000000";
+  const white = "#fff3df";
+  // torso
+  fillEllipse(grid, 16, 18, 7.5, 6.5, body);
+  fillEllipse(grid, 16, 20.5, 4.5, 4, white);
+  // body stripes flanking the white belly patch
+  fillRect(grid, 9.5, 13.5, 1.4, 8, stripe);
+  fillRect(grid, 12.2, 12.8, 1.4, 9, stripe);
+  fillRect(grid, 18.4, 12.8, 1.4, 9, stripe);
+  fillRect(grid, 21.1, 13.5, 1.4, 8, stripe);
+  // front paws resting together
+  fillEllipse(grid, 11.8, 22.5, 1.9, 1.6, white);
+  fillEllipse(grid, 20.2, 22.5, 1.9, 1.6, white);
+  setPixel(grid, 11.4, 22.5, stripe);
+  setPixel(grid, 20.6, 22.5, stripe);
+  // tail curling out from behind, over the right side
+  const tailPts: SerpentPoint[] = [
+    { x: 23, y: 19, r: 1.6 },
+    { x: 26.2, y: 17.2, r: 1.4 },
+    { x: 27.6, y: 14, r: 1.2 },
+    { x: 26.5, y: 11, r: 1.0 },
+  ];
+  drawSerpentTube(grid, tailPts, body);
+  fillRect(grid, 25.6, 11.6, 1.6, 1.2, stripe);
+  fillEllipse(grid, 26.3, 10.4, 1, 1, stripe);
+  // head, centered above the torso, facing the viewer
+  fillEllipse(grid, 16, 8.2, 6, 6, body);
+  fillEllipse(grid, 9.6, 4.4, 2.8, 2.8, body);
+  fillEllipse(grid, 22.4, 4.4, 2.8, 2.8, body);
+  fillEllipse(grid, 9.4, 2.6, 1.4, 1.4, stripe);
+  fillEllipse(grid, 22.6, 2.6, 1.4, 1.4, stripe);
+  // forehead stripes
+  fillRect(grid, 11.6, 2.6, 1.3, 3.4, stripe);
+  fillRect(grid, 14.6, 2.2, 1.3, 3.8, stripe);
+  fillRect(grid, 18.1, 2.2, 1.3, 3.8, stripe);
+  fillRect(grid, 21.1, 2.6, 1.3, 3.4, stripe);
+  // white muzzle + cheek stripes + nose
+  fillEllipse(grid, 16, 11.2, 4.2, 3.4, white);
+  fillRect(grid, 10.8, 9.8, 1.1, 2.2, stripe);
+  fillRect(grid, 20.1, 9.8, 1.1, 2.2, stripe);
+  fillRect(grid, 15.2, 10.4, 1.6, 1.2, stripe);
+  setPixel(grid, 12.8, 7.6, "#141116");
+  setPixel(grid, 19.2, 7.6, "#141116");
+  return grid;
+}
 
 /** Monkey sits/stands upright (tall torso, head centered on top) instead of the horizontal quadruped pose. */
 function buildMonkeyBody(): Grid {

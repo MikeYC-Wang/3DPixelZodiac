@@ -94,16 +94,28 @@ function renderSlither(spec: AnimalSpec): string {
   const outlined = outlineGrid(grid, spec.palette.outline, [spec.palette.eye]);
   const amplitude = 9;
   const totalCols = outlined[0].length;
-  const bandCount = Math.ceil(totalCols / SERPENT_BAND_WIDTH);
+  // the head end (rightmost columns) stays rigid so the face/horns don't get chopped into wiggling
+  // slices - only the body/tail to its left undulates
+  const staticCols = Math.min(totalCols, Math.round((spec.headStaticWidth ?? 0) * SCALE));
+  const animatedCols = totalCols - staticCols;
+  const bandCount = Math.ceil(animatedCols / SERPENT_BAND_WIDTH);
   let out = "";
   for (let b = 0; b < bandCount; b++) {
     const startCol = b * SERPENT_BAND_WIDTH;
-    const width = Math.min(SERPENT_BAND_WIDTH, totalCols - startCol);
+    const width = Math.min(SERPENT_BAND_WIDTH, animatedCols - startCol);
     const band = sliceColumnBand(outlined, startCol, width);
     const rects = gridToRects(band, {}, FINE_CELL, 0, 0);
     if (!rects) continue;
     const ax = startCol * FINE_CELL;
     out += `<g transform="translate(${ax},0)"><g>${rects}${segmentUndulation(b, amplitude)}</g></g>`;
+  }
+  if (staticCols > 0) {
+    const headBand = sliceColumnBand(outlined, animatedCols, staticCols);
+    const rects = gridToRects(headBand, {}, FINE_CELL, 0, 0);
+    if (rects) {
+      const ax = animatedCols * FINE_CELL;
+      out += `<g transform="translate(${ax},0)">${rects}</g>`;
+    }
   }
   return out;
 }

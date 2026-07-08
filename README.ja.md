@@ -2,7 +2,7 @@
 
 [繁體中文](README.md) | [English](README.en.md) | 日本語 | [한국어](README.ko.md)
 
-「今年の干支」を自動判定し、歩行／羽ばたき／スライドのループアニメーションを再生するレトロなピクセルアート SVG です。SMIL（`<animate>` / `<animateTransform>`）だけで動作し、JavaScript は一切使用していないため、GitHub の `README.md` に `<img>` として埋め込むだけでそのままアニメーションが再生されます。
+「今年の干支」を自動判定し、歩行／羽ばたき／浮遊のループアニメーションを再生するレトロなピクセルアート SVG です。SMIL（`<animate>` / `<animateTransform>`）だけで動作し、JavaScript は一切使用していないため、GitHub の `README.md` に `<img>` として埋め込むだけでそのままアニメーションが再生されます。
 
 ![preview](https://raw.githubusercontent.com/MikeYC-Wang/3DPixelZodiac/output/dist/zodiac.svg)
 
@@ -28,8 +28,8 @@ https://raw.githubusercontent.com/MikeYC-Wang/3DPixelZodiac/output/dist/zodiac-{
 | `ox` | 丑（ウシ） | 歩行 | ![ox](https://raw.githubusercontent.com/MikeYC-Wang/3DPixelZodiac/output/dist/zodiac-ox.svg) |
 | `tiger` | 寅（トラ） | 歩行 | ![tiger](https://raw.githubusercontent.com/MikeYC-Wang/3DPixelZodiac/output/dist/zodiac-tiger.svg) |
 | `rabbit` | 卯（ウサギ） | ジャンプ | ![rabbit](https://raw.githubusercontent.com/MikeYC-Wang/3DPixelZodiac/output/dist/zodiac-rabbit.svg) |
-| `dragon` | 辰（タツ） | 遊泳 | ![dragon](https://raw.githubusercontent.com/MikeYC-Wang/3DPixelZodiac/output/dist/zodiac-dragon.svg) |
-| `snake` | 巳（ヘビ） | 遊泳 | ![snake](https://raw.githubusercontent.com/MikeYC-Wang/3DPixelZodiac/output/dist/zodiac-snake.svg) |
+| `dragon` | 辰（タツ） | 浮遊 | ![dragon](https://raw.githubusercontent.com/MikeYC-Wang/3DPixelZodiac/output/dist/zodiac-dragon.svg) |
+| `snake` | 巳（ヘビ） | 浮遊 | ![snake](https://raw.githubusercontent.com/MikeYC-Wang/3DPixelZodiac/output/dist/zodiac-snake.svg) |
 | `horse` | 午（ウマ） | 歩行 | ![horse](https://raw.githubusercontent.com/MikeYC-Wang/3DPixelZodiac/output/dist/zodiac-horse.svg) |
 | `goat` | 未（ヒツジ） | 歩行 | ![goat](https://raw.githubusercontent.com/MikeYC-Wang/3DPixelZodiac/output/dist/zodiac-goat.svg) |
 | `monkey` | 申（サル） | 歩行 | ![monkey](https://raw.githubusercontent.com/MikeYC-Wang/3DPixelZodiac/output/dist/zodiac-monkey.svg) |
@@ -51,7 +51,7 @@ https://raw.githubusercontent.com/MikeYC-Wang/3DPixelZodiac/output/dist/zodiac-{
 ## 仕組み
 
 - [lunar-javascript](https://www.npmjs.com/package/lunar-javascript) を使って現在の西暦日付を旧暦の年に変換し、十二支の周期（基準となる子年からの周期計算）に当てはめて今年の干支を判定します。
-- 各動物の本体は単純な SVG `<rect>` によるピクセルグリッド（24×24 セル）で描かれています。歩行／羽ばたき／スライドのアニメーションはすべて SMIL の `<animate>` / `<animateTransform>`（`calcMode="discrete"` により、滑らかな呼吸のような拡大縮小ではなく、決まったポーズ間をカクカクと切り替える方式）で駆動されているため、GitHub README の `<img>` タグ内でもアニメーションし続けます。
+- 各動物の本体は単純な SVG `<rect>` によるピクセルグリッド（24×24 セル）で描かれています。歩行／羽ばたき／浮遊のアニメーションはすべて SMIL の `<animate>` / `<animateTransform>`（`calcMode="discrete"` により、滑らかな呼吸のような拡大縮小ではなく、決まったポーズ間をカクカクと切り替える方式）で駆動されているため、GitHub README の `<img>` タグ内でもアニメーションし続けます。
 - GitHub Actions のスケジュールが毎日すべての干支 SVG を再生成し、`output` ブランチの `dist/` フォルダにプッシュします。`main` ブランチには生成用のソースコードのみが置かれています。
 
 ## ローカル開発

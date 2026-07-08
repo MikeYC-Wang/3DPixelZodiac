@@ -2,7 +2,7 @@
 
 [English](README.en.md) | [日本語](README.ja.md) | [한국어](README.ko.md) | 繁體中文
 
-一張會自動判斷「今年生肖」並播放走路/拍翅循環動畫的復古像素風 SVG，用純 SMIL（`<animate>` / `<animateTransform>`）驅動、完全不用 JavaScript，任何人都可以直接嵌入自己的 GitHub `README.md` 播放動畫。
+一張會自動判斷「今年生肖」並播放走路/拍翅/漂浮循環動畫的復古像素風 SVG，用純 SMIL（`<animate>` / `<animateTransform>`）驅動、完全不用 JavaScript，任何人都可以直接嵌入自己的 GitHub `README.md` 播放動畫。
 
 ![preview](https://raw.githubusercontent.com/MikeYC-Wang/3DPixelZodiac/output/dist/zodiac.svg)
 
@@ -28,8 +28,8 @@ https://raw.githubusercontent.com/MikeYC-Wang/3DPixelZodiac/output/dist/zodiac-{
 | `ox` | 牛 | 走路 | ![ox](https://raw.githubusercontent.com/MikeYC-Wang/3DPixelZodiac/output/dist/zodiac-ox.svg) |
 | `tiger` | 虎 | 走路 | ![tiger](https://raw.githubusercontent.com/MikeYC-Wang/3DPixelZodiac/output/dist/zodiac-tiger.svg) |
 | `rabbit` | 兔 | 跳躍 | ![rabbit](https://raw.githubusercontent.com/MikeYC-Wang/3DPixelZodiac/output/dist/zodiac-rabbit.svg) |
-| `dragon` | 龍 | 游動 | ![dragon](https://raw.githubusercontent.com/MikeYC-Wang/3DPixelZodiac/output/dist/zodiac-dragon.svg) |
-| `snake` | 蛇 | 游動 | ![snake](https://raw.githubusercontent.com/MikeYC-Wang/3DPixelZodiac/output/dist/zodiac-snake.svg) |
+| `dragon` | 龍 | 漂浮 | ![dragon](https://raw.githubusercontent.com/MikeYC-Wang/3DPixelZodiac/output/dist/zodiac-dragon.svg) |
+| `snake` | 蛇 | 漂浮 | ![snake](https://raw.githubusercontent.com/MikeYC-Wang/3DPixelZodiac/output/dist/zodiac-snake.svg) |
 | `horse` | 馬 | 走路 | ![horse](https://raw.githubusercontent.com/MikeYC-Wang/3DPixelZodiac/output/dist/zodiac-horse.svg) |
 | `goat` | 羊 | 走路 | ![goat](https://raw.githubusercontent.com/MikeYC-Wang/3DPixelZodiac/output/dist/zodiac-goat.svg) |
 | `monkey` | 猴 | 走路 | ![monkey](https://raw.githubusercontent.com/MikeYC-Wang/3DPixelZodiac/output/dist/zodiac-monkey.svg) |
@@ -51,7 +51,7 @@ https://raw.githubusercontent.com/MikeYC-Wang/3DPixelZodiac/output/dist/zodiac-{
 ## 運作原理
 
 - 用 [lunar-javascript](https://www.npmjs.com/package/lunar-javascript) 把目前的國曆日期換算成農曆年份，再依十二年循環（鼠年為基準）換算出今年生肖。
-- 動物本體是純 SVG `<rect>` 像素網格拼出來的（24×24 格），走路/拍翅/游動動畫全部用 SMIL `<animate>` / `<animateTransform>`（`calcMode="discrete"`，逐格切換，不是平滑呼吸縮放）驅動，因此嵌入 GitHub README 的 `<img>` 也能直接播放。
+- 動物本體是純 SVG `<rect>` 像素網格拼出來的（24×24 格），走路/拍翅/漂浮動畫全部用 SMIL `<animate>` / `<animateTransform>`（`calcMode="discrete"`，逐格切換，不是平滑呼吸縮放）驅動，因此嵌入 GitHub README 的 `<img>` 也能直接播放。
 - GitHub Actions 排程每天重新產生所有生肖 SVG，推送到 `output` 分支的 `dist/` 目錄；`main` 分支只放產生器原始碼。
 
 ## 本機開發

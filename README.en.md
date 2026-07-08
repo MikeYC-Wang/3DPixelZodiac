@@ -2,7 +2,7 @@
 
 [繁體中文](README.md) | English | [日本語](README.ja.md) | [한국어](README.ko.md)
 
-A retro pixel-art SVG that automatically figures out "this year's" Chinese zodiac animal and plays a walking / wing-flapping / slithering loop animation, driven entirely by SMIL (`<animate>` / `<animateTransform>`) — no JavaScript at all, so it plays perfectly as a plain `<img>` embedded in your GitHub `README.md`.
+A retro pixel-art SVG that automatically figures out "this year's" Chinese zodiac animal and plays a walking / wing-flapping / floating loop animation, driven entirely by SMIL (`<animate>` / `<animateTransform>`) — no JavaScript at all, so it plays perfectly as a plain `<img>` embedded in your GitHub `README.md`.
 
 ![preview](https://raw.githubusercontent.com/MikeYC-Wang/3DPixelZodiac/output/dist/zodiac.svg)
 
@@ -28,8 +28,8 @@ https://raw.githubusercontent.com/MikeYC-Wang/3DPixelZodiac/output/dist/zodiac-{
 | `ox` | Ox | walk | ![ox](https://raw.githubusercontent.com/MikeYC-Wang/3DPixelZodiac/output/dist/zodiac-ox.svg) |
 | `tiger` | Tiger | walk | ![tiger](https://raw.githubusercontent.com/MikeYC-Wang/3DPixelZodiac/output/dist/zodiac-tiger.svg) |
 | `rabbit` | Rabbit | hop | ![rabbit](https://raw.githubusercontent.com/MikeYC-Wang/3DPixelZodiac/output/dist/zodiac-rabbit.svg) |
-| `dragon` | Dragon | slither | ![dragon](https://raw.githubusercontent.com/MikeYC-Wang/3DPixelZodiac/output/dist/zodiac-dragon.svg) |
-| `snake` | Snake | slither | ![snake](https://raw.githubusercontent.com/MikeYC-Wang/3DPixelZodiac/output/dist/zodiac-snake.svg) |
+| `dragon` | Dragon | float | ![dragon](https://raw.githubusercontent.com/MikeYC-Wang/3DPixelZodiac/output/dist/zodiac-dragon.svg) |
+| `snake` | Snake | float | ![snake](https://raw.githubusercontent.com/MikeYC-Wang/3DPixelZodiac/output/dist/zodiac-snake.svg) |
 | `horse` | Horse | walk | ![horse](https://raw.githubusercontent.com/MikeYC-Wang/3DPixelZodiac/output/dist/zodiac-horse.svg) |
 | `goat` | Goat | walk | ![goat](https://raw.githubusercontent.com/MikeYC-Wang/3DPixelZodiac/output/dist/zodiac-goat.svg) |
 | `monkey` | Monkey | walk | ![monkey](https://raw.githubusercontent.com/MikeYC-Wang/3DPixelZodiac/output/dist/zodiac-monkey.svg) |
@@ -51,7 +51,7 @@ Example:
 ## How it works
 
 - [lunar-javascript](https://www.npmjs.com/package/lunar-javascript) converts today's Gregorian date into its Lunar calendar year, which is then mapped onto the 12-year zodiac cycle (anchored on a known Rat year).
-- Every animal's body is a plain SVG `<rect>` pixel grid (24×24 cells). The walking / wing-flapping / slithering motion is driven entirely by SMIL `<animate>` / `<animateTransform>` with `calcMode="discrete"` (snapping between fixed poses, not a smooth breathing tween), so it keeps animating even inside a GitHub README `<img>` tag.
+- Every animal's body is a plain SVG `<rect>` pixel grid (24×24 cells). The walking / wing-flapping / floating motion is driven entirely by SMIL `<animate>` / `<animateTransform>` with `calcMode="discrete"` (snapping between fixed poses, not a smooth breathing tween), so it keeps animating even inside a GitHub README `<img>` tag.
 - A GitHub Actions schedule regenerates every animal's SVG daily and pushes them to the `dist/` folder of the `output` branch; the `main` branch only holds the generator source code.
 
 ## Local development

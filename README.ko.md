@@ -2,7 +2,7 @@
 
 [繁體中文](README.md) | [English](README.en.md) | [日本語](README.ja.md) | 한국어
 
-"올해의 띠"를 자동으로 판별해서 걷기 / 날개짓 / 슬리더링(스르르 움직임) 반복 애니메이션을 재생하는 레트로 픽셀 아트 SVG입니다. 오직 SMIL(`<animate>` / `<animateTransform>`)만으로 동작하며 JavaScript는 전혀 사용하지 않으므로, GitHub `README.md`에 `<img>`로 삽입하기만 해도 애니메이션이 그대로 재생됩니다.
+"올해의 띠"를 자동으로 판별해서 걷기 / 날개짓 / 부유 반복 애니메이션을 재생하는 레트로 픽셀 아트 SVG입니다. 오직 SMIL(`<animate>` / `<animateTransform>`)만으로 동작하며 JavaScript는 전혀 사용하지 않으므로, GitHub `README.md`에 `<img>`로 삽입하기만 해도 애니메이션이 그대로 재생됩니다.
 
 ![preview](https://raw.githubusercontent.com/MikeYC-Wang/3DPixelZodiac/output/dist/zodiac.svg)
 
@@ -28,8 +28,8 @@ https://raw.githubusercontent.com/MikeYC-Wang/3DPixelZodiac/output/dist/zodiac-{
 | `ox` | 소 | 걷기 | ![ox](https://raw.githubusercontent.com/MikeYC-Wang/3DPixelZodiac/output/dist/zodiac-ox.svg) |
 | `tiger` | 호랑이 | 걷기 | ![tiger](https://raw.githubusercontent.com/MikeYC-Wang/3DPixelZodiac/output/dist/zodiac-tiger.svg) |
 | `rabbit` | 토끼 | 뛰기 | ![rabbit](https://raw.githubusercontent.com/MikeYC-Wang/3DPixelZodiac/output/dist/zodiac-rabbit.svg) |
-| `dragon` | 용 | 스르르 움직임 | ![dragon](https://raw.githubusercontent.com/MikeYC-Wang/3DPixelZodiac/output/dist/zodiac-dragon.svg) |
-| `snake` | 뱀 | 스르르 움직임 | ![snake](https://raw.githubusercontent.com/MikeYC-Wang/3DPixelZodiac/output/dist/zodiac-snake.svg) |
+| `dragon` | 용 | 부유 | ![dragon](https://raw.githubusercontent.com/MikeYC-Wang/3DPixelZodiac/output/dist/zodiac-dragon.svg) |
+| `snake` | 뱀 | 부유 | ![snake](https://raw.githubusercontent.com/MikeYC-Wang/3DPixelZodiac/output/dist/zodiac-snake.svg) |
 | `horse` | 말 | 걷기 | ![horse](https://raw.githubusercontent.com/MikeYC-Wang/3DPixelZodiac/output/dist/zodiac-horse.svg) |
 | `goat` | 양 | 걷기 | ![goat](https://raw.githubusercontent.com/MikeYC-Wang/3DPixelZodiac/output/dist/zodiac-goat.svg) |
 | `monkey` | 원숭이 | 걷기 | ![monkey](https://raw.githubusercontent.com/MikeYC-Wang/3DPixelZodiac/output/dist/zodiac-monkey.svg) |
@@ -51,7 +51,7 @@ https://raw.githubusercontent.com/MikeYC-Wang/3DPixelZodiac/output/dist/zodiac-{
 ## 작동 원리
 
 - [lunar-javascript](https://www.npmjs.com/package/lunar-javascript)를 사용해 오늘의 양력 날짜를 음력 연도로 변환하고, 12년 주기(기준이 되는 쥐띠 해를 기점으로)에 대입해 올해의 띠를 계산합니다.
-- 각 동물의 몸체는 단순한 SVG `<rect>` 픽셀 그리드(24×24 셀)로 그려집니다. 걷기 / 날개짓 / 스르르 움직임 애니메이션은 모두 SMIL `<animate>` / `<animateTransform>`(`calcMode="discrete"`로 부드러운 호흡 같은 확대/축소가 아니라 정해진 포즈 사이를 딱딱 끊어서 전환)으로 구동되므로, GitHub README의 `<img>` 태그 안에서도 계속 애니메이션됩니다.
+- 각 동물의 몸체는 단순한 SVG `<rect>` 픽셀 그리드(24×24 셀)로 그려집니다. 걷기 / 날개짓 / 부유 애니메이션은 모두 SMIL `<animate>` / `<animateTransform>`(`calcMode="discrete"`로 부드러운 호흡 같은 확대/축소가 아니라 정해진 포즈 사이를 딱딱 끊어서 전환)으로 구동되므로, GitHub README의 `<img>` 태그 안에서도 계속 애니메이션됩니다.
 - GitHub Actions 스케줄이 매일 모든 띠의 SVG를 다시 생성해서 `output` 브랜치의 `dist/` 폴더에 푸시합니다. `main` 브랜치에는 생성기 소스 코드만 있습니다.
 
 ## 로컬 개발

@@ -254,33 +254,40 @@ export const ANIMALS: AnimalSpec[] = [
     key: "dog",
     order: 10,
     name: { zh: "狗", en: "Dog", ja: "イヌ", ko: "개" },
-    palette: { outline: "#2a1a0c", body: "#d9822b", belly: "#fdf6ea", accent: "#fdf6ea", eye: "#141116" },
+    palette: { outline: "#2a1a0c", body: "#f1e8d8", belly: "#ffffff", accent: "#b5763d", eye: "#141116" },
     locomotion: "walk",
     buildBody: () =>
       buildMammalBody({
-        // shiba inu: warm red/tan coat, cream "urajiro" markings, upright pointed ears, curled tail
-        bodyColor: "#d9822b",
-        bellyColor: "#fdf6ea",
-        snoutColor: "#fdf6ea",
+        // beagle: tricolor - white body/legs, tan head + floppy ears, black saddle, white tail tip
+        bodyColor: "#f1e8d8",
+        headColor: "#b5763d",
+        bellyColor: "#ffffff",
+        snoutColor: "#f1e8d8",
         eyeColor: "#141116",
-        earStyle: "pointy",
-        earColor: "#d9822b",
-        snoutScale: 0.8,
+        earStyle: "none",
+        earColor: "#b5763d",
+        snoutScale: 0.85,
         drawHeadExtras: (grid) => {
-          // small brow accent only - the white snout already reads as the urajiro muzzle marking
-          setPixel(grid, 24.2, 9.6, "#fdf6ea");
+          // single near-side floppy ear hanging from the top-back of the head down past the cheek
+          fillEllipse(grid, 20.8, 12.4, 2, 4, "#7a4a24");
+          fillEllipse(grid, 21.1, 12.2, 0.9, 2.6, "#9a6032");
+          // black nose at the tip of the white muzzle
+          fillEllipse(grid, 29, 13, 1, 0.9, "#141116");
+        },
+        drawMarkings: (grid) => {
+          // black saddle over the back
+          fillEllipse(grid, 12.5, 12.6, 6, 2.6, "#2a2018");
         },
         drawTail: (grid) => {
-          // tail curling up and over the back, spitz-style, with a fluffy cream tip
+          // upright tail with a white tip (classic beagle flag tail)
           const pts: SerpentPoint[] = [
-            { x: 3, y: 13.5, r: 1.5 },
-            { x: 1.2, y: 11.2, r: 1.3 },
-            { x: 1.3, y: 8.5, r: 1.2 },
-            { x: 3.2, y: 6.8, r: 1.1 },
-            { x: 5.5, y: 7, r: 0.9 },
+            { x: 4.6, y: 14, r: 1.4 },
+            { x: 3.7, y: 11.5, r: 1.2 },
+            { x: 3.9, y: 9.4, r: 1 },
+            { x: 4.7, y: 7.9, r: 0.9 },
           ];
-          drawSerpentTube(grid, pts, "#d9822b");
-          fillEllipse(grid, 5.5, 7, 1, 1, "#fdf6ea");
+          drawSerpentTube(grid, pts, "#b5763d");
+          fillEllipse(grid, 4.7, 7.9, 1, 1.1, "#ffffff");
         },
       }),
   },

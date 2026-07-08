@@ -28,6 +28,7 @@ export interface MammalOptions {
   snoutColor?: string;
   eyeColor: string;
   earStyle:
+    | "none"
     | "round"
     | "pointy"
     | "floppy"
@@ -115,6 +116,8 @@ function drawEars(
 ): void {
   const top = headCy - 8;
   switch (style) {
+    case "none":
+      break;
     case "round":
       fillEllipse(grid, HEAD.cx - 2, top + 2.5, 2.2, 2.4, earColor);
       fillEllipse(grid, HEAD.cx + 3.5, top + 2, 2.2, 2.4, earColor);

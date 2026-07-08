@@ -2,6 +2,7 @@
   "name": "3d-pixel-zodiac",
   "version": "1.0.0",
   "private": true,
+  "license": "MIT",
   "description": "Pixel-art animated Chinese zodiac SVG generator (SMIL animation, no JS)",
   "main": "dist/index.js",
   "scripts": {

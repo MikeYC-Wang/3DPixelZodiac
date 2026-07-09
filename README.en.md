@@ -1,17 +1,17 @@
-# 🐉 3D Pixel Zodiac
+﻿# 🐉 3D Pixel Zodiac
 
 [繁體中文](README.md) | English | [日本語](README.ja.md) | [한국어](README.ko.md)
 
 A retro pixel-art SVG that automatically figures out "this year's" Chinese zodiac animal and plays a walking / wing-flapping / floating loop animation, driven entirely by SMIL (`<animate>` / `<animateTransform>`) — no JavaScript at all, so it plays perfectly as a plain `<img>` embedded in your GitHub `README.md`.
 
-![preview](https://raw.githubusercontent.com/MikeYC-Wang/3DPixelZodiac/output/dist/zodiac.svg)
+![preview](https://cdn.jsdelivr.net/gh/MikeYC-Wang/3DPixelZodiac@output/dist/zodiac.svg)
 
 ## Quick embed
 
 Copy this into your `README.md` (automatically shows "this year's" animal, computed from the Lunar calendar year):
 
 ```md
-![this year's zodiac](https://raw.githubusercontent.com/MikeYC-Wang/3DPixelZodiac/output/dist/zodiac.svg)
+![this year's zodiac](https://cdn.jsdelivr.net/gh/MikeYC-Wang/3DPixelZodiac@output/dist/zodiac.svg)
 ```
 
 ## Gallery — all 12 animals
@@ -19,29 +19,29 @@ Copy this into your `README.md` (automatically shows "this year's" animal, compu
 You can also pin any specific animal regardless of the year. URL pattern:
 
 ```
-https://raw.githubusercontent.com/MikeYC-Wang/3DPixelZodiac/output/dist/zodiac-{animal}.svg
+https://cdn.jsdelivr.net/gh/MikeYC-Wang/3DPixelZodiac@output/dist/zodiac-{animal}.svg
 ```
 
 | Code | Animal | Animation | Preview |
 | --- | --- | --- | --- |
-| `rat` | Rat | walk | ![rat](https://raw.githubusercontent.com/MikeYC-Wang/3DPixelZodiac/output/dist/zodiac-rat.svg) |
-| `ox` | Ox | walk | ![ox](https://raw.githubusercontent.com/MikeYC-Wang/3DPixelZodiac/output/dist/zodiac-ox.svg) |
-| `tiger` | Tiger | walk | ![tiger](https://raw.githubusercontent.com/MikeYC-Wang/3DPixelZodiac/output/dist/zodiac-tiger.svg) |
-| `rabbit` | Rabbit | hop | ![rabbit](https://raw.githubusercontent.com/MikeYC-Wang/3DPixelZodiac/output/dist/zodiac-rabbit.svg) |
-| `dragon` | Dragon | float | ![dragon](https://raw.githubusercontent.com/MikeYC-Wang/3DPixelZodiac/output/dist/zodiac-dragon.svg) |
-| `snake` | Snake | float | ![snake](https://raw.githubusercontent.com/MikeYC-Wang/3DPixelZodiac/output/dist/zodiac-snake.svg) |
-| `horse` | Horse | walk | ![horse](https://raw.githubusercontent.com/MikeYC-Wang/3DPixelZodiac/output/dist/zodiac-horse.svg) |
-| `goat` | Goat | walk | ![goat](https://raw.githubusercontent.com/MikeYC-Wang/3DPixelZodiac/output/dist/zodiac-goat.svg) |
-| `monkey` | Monkey | walk | ![monkey](https://raw.githubusercontent.com/MikeYC-Wang/3DPixelZodiac/output/dist/zodiac-monkey.svg) |
-| `rooster` | Rooster | wing flap | ![rooster](https://raw.githubusercontent.com/MikeYC-Wang/3DPixelZodiac/output/dist/zodiac-rooster.svg) |
-| `dog` | Dog | walk | ![dog](https://raw.githubusercontent.com/MikeYC-Wang/3DPixelZodiac/output/dist/zodiac-dog.svg) |
-| `pig` | Pig | walk | ![pig](https://raw.githubusercontent.com/MikeYC-Wang/3DPixelZodiac/output/dist/zodiac-pig.svg) |
+| `rat` | Rat | walk | ![rat](https://cdn.jsdelivr.net/gh/MikeYC-Wang/3DPixelZodiac@output/dist/zodiac-rat.svg) |
+| `ox` | Ox | walk | ![ox](https://cdn.jsdelivr.net/gh/MikeYC-Wang/3DPixelZodiac@output/dist/zodiac-ox.svg) |
+| `tiger` | Tiger | walk | ![tiger](https://cdn.jsdelivr.net/gh/MikeYC-Wang/3DPixelZodiac@output/dist/zodiac-tiger.svg) |
+| `rabbit` | Rabbit | hop | ![rabbit](https://cdn.jsdelivr.net/gh/MikeYC-Wang/3DPixelZodiac@output/dist/zodiac-rabbit.svg) |
+| `dragon` | Dragon | float | ![dragon](https://cdn.jsdelivr.net/gh/MikeYC-Wang/3DPixelZodiac@output/dist/zodiac-dragon.svg) |
+| `snake` | Snake | float | ![snake](https://cdn.jsdelivr.net/gh/MikeYC-Wang/3DPixelZodiac@output/dist/zodiac-snake.svg) |
+| `horse` | Horse | walk | ![horse](https://cdn.jsdelivr.net/gh/MikeYC-Wang/3DPixelZodiac@output/dist/zodiac-horse.svg) |
+| `goat` | Goat | walk | ![goat](https://cdn.jsdelivr.net/gh/MikeYC-Wang/3DPixelZodiac@output/dist/zodiac-goat.svg) |
+| `monkey` | Monkey | walk | ![monkey](https://cdn.jsdelivr.net/gh/MikeYC-Wang/3DPixelZodiac@output/dist/zodiac-monkey.svg) |
+| `rooster` | Rooster | wing flap | ![rooster](https://cdn.jsdelivr.net/gh/MikeYC-Wang/3DPixelZodiac@output/dist/zodiac-rooster.svg) |
+| `dog` | Dog | walk | ![dog](https://cdn.jsdelivr.net/gh/MikeYC-Wang/3DPixelZodiac@output/dist/zodiac-dog.svg) |
+| `pig` | Pig | walk | ![pig](https://cdn.jsdelivr.net/gh/MikeYC-Wang/3DPixelZodiac@output/dist/zodiac-pig.svg) |
 
 Example:
 
 ```md
 <!-- Always shows the Tiger, regardless of the current year -->
-![tiger](https://raw.githubusercontent.com/MikeYC-Wang/3DPixelZodiac/output/dist/zodiac-tiger.svg)
+![tiger](https://cdn.jsdelivr.net/gh/MikeYC-Wang/3DPixelZodiac@output/dist/zodiac-tiger.svg)
 ```
 
 ## How does this relate to 3DPixelCalendar?

@@ -1,17 +1,17 @@
-# 🐉 3D Pixel Zodiac
+﻿# 🐉 3D Pixel Zodiac
 
 [繁體中文](README.md) | [English](README.en.md) | [日本語](README.ja.md) | 한국어
 
 "올해의 띠"를 자동으로 판별해서 걷기 / 날개짓 / 부유 반복 애니메이션을 재생하는 레트로 픽셀 아트 SVG입니다. 오직 SMIL(`<animate>` / `<animateTransform>`)만으로 동작하며 JavaScript는 전혀 사용하지 않으므로, GitHub `README.md`에 `<img>`로 삽입하기만 해도 애니메이션이 그대로 재생됩니다.
 
-![preview](https://raw.githubusercontent.com/MikeYC-Wang/3DPixelZodiac/output/dist/zodiac.svg)
+![preview](https://cdn.jsdelivr.net/gh/MikeYC-Wang/3DPixelZodiac@output/dist/zodiac.svg)
 
 ## 빠른 삽입
 
 아래 내용을 `README.md`에 복사하세요 (음력 연도를 기준으로 계산된 "올해의 띠"가 자동으로 표시됩니다):
 
 ```md
-![올해의 띠](https://raw.githubusercontent.com/MikeYC-Wang/3DPixelZodiac/output/dist/zodiac.svg)
+![올해의 띠](https://cdn.jsdelivr.net/gh/MikeYC-Wang/3DPixelZodiac@output/dist/zodiac.svg)
 ```
 
 ## 갤러리 — 12지신 전체
@@ -19,29 +19,29 @@
 연도와 상관없이 특정 동물을 고정해서 보여줄 수도 있습니다. URL 형식:
 
 ```
-https://raw.githubusercontent.com/MikeYC-Wang/3DPixelZodiac/output/dist/zodiac-{animal}.svg
+https://cdn.jsdelivr.net/gh/MikeYC-Wang/3DPixelZodiac@output/dist/zodiac-{animal}.svg
 ```
 
 | 코드 | 띠 | 애니메이션 | 미리보기 |
 | --- | --- | --- | --- |
-| `rat` | 쥐 | 걷기 | ![rat](https://raw.githubusercontent.com/MikeYC-Wang/3DPixelZodiac/output/dist/zodiac-rat.svg) |
-| `ox` | 소 | 걷기 | ![ox](https://raw.githubusercontent.com/MikeYC-Wang/3DPixelZodiac/output/dist/zodiac-ox.svg) |
-| `tiger` | 호랑이 | 걷기 | ![tiger](https://raw.githubusercontent.com/MikeYC-Wang/3DPixelZodiac/output/dist/zodiac-tiger.svg) |
-| `rabbit` | 토끼 | 뛰기 | ![rabbit](https://raw.githubusercontent.com/MikeYC-Wang/3DPixelZodiac/output/dist/zodiac-rabbit.svg) |
-| `dragon` | 용 | 부유 | ![dragon](https://raw.githubusercontent.com/MikeYC-Wang/3DPixelZodiac/output/dist/zodiac-dragon.svg) |
-| `snake` | 뱀 | 부유 | ![snake](https://raw.githubusercontent.com/MikeYC-Wang/3DPixelZodiac/output/dist/zodiac-snake.svg) |
-| `horse` | 말 | 걷기 | ![horse](https://raw.githubusercontent.com/MikeYC-Wang/3DPixelZodiac/output/dist/zodiac-horse.svg) |
-| `goat` | 양 | 걷기 | ![goat](https://raw.githubusercontent.com/MikeYC-Wang/3DPixelZodiac/output/dist/zodiac-goat.svg) |
-| `monkey` | 원숭이 | 걷기 | ![monkey](https://raw.githubusercontent.com/MikeYC-Wang/3DPixelZodiac/output/dist/zodiac-monkey.svg) |
-| `rooster` | 닭 | 날개짓 | ![rooster](https://raw.githubusercontent.com/MikeYC-Wang/3DPixelZodiac/output/dist/zodiac-rooster.svg) |
-| `dog` | 개 | 걷기 | ![dog](https://raw.githubusercontent.com/MikeYC-Wang/3DPixelZodiac/output/dist/zodiac-dog.svg) |
-| `pig` | 돼지 | 걷기 | ![pig](https://raw.githubusercontent.com/MikeYC-Wang/3DPixelZodiac/output/dist/zodiac-pig.svg) |
+| `rat` | 쥐 | 걷기 | ![rat](https://cdn.jsdelivr.net/gh/MikeYC-Wang/3DPixelZodiac@output/dist/zodiac-rat.svg) |
+| `ox` | 소 | 걷기 | ![ox](https://cdn.jsdelivr.net/gh/MikeYC-Wang/3DPixelZodiac@output/dist/zodiac-ox.svg) |
+| `tiger` | 호랑이 | 걷기 | ![tiger](https://cdn.jsdelivr.net/gh/MikeYC-Wang/3DPixelZodiac@output/dist/zodiac-tiger.svg) |
+| `rabbit` | 토끼 | 뛰기 | ![rabbit](https://cdn.jsdelivr.net/gh/MikeYC-Wang/3DPixelZodiac@output/dist/zodiac-rabbit.svg) |
+| `dragon` | 용 | 부유 | ![dragon](https://cdn.jsdelivr.net/gh/MikeYC-Wang/3DPixelZodiac@output/dist/zodiac-dragon.svg) |
+| `snake` | 뱀 | 부유 | ![snake](https://cdn.jsdelivr.net/gh/MikeYC-Wang/3DPixelZodiac@output/dist/zodiac-snake.svg) |
+| `horse` | 말 | 걷기 | ![horse](https://cdn.jsdelivr.net/gh/MikeYC-Wang/3DPixelZodiac@output/dist/zodiac-horse.svg) |
+| `goat` | 양 | 걷기 | ![goat](https://cdn.jsdelivr.net/gh/MikeYC-Wang/3DPixelZodiac@output/dist/zodiac-goat.svg) |
+| `monkey` | 원숭이 | 걷기 | ![monkey](https://cdn.jsdelivr.net/gh/MikeYC-Wang/3DPixelZodiac@output/dist/zodiac-monkey.svg) |
+| `rooster` | 닭 | 날개짓 | ![rooster](https://cdn.jsdelivr.net/gh/MikeYC-Wang/3DPixelZodiac@output/dist/zodiac-rooster.svg) |
+| `dog` | 개 | 걷기 | ![dog](https://cdn.jsdelivr.net/gh/MikeYC-Wang/3DPixelZodiac@output/dist/zodiac-dog.svg) |
+| `pig` | 돼지 | 걷기 | ![pig](https://cdn.jsdelivr.net/gh/MikeYC-Wang/3DPixelZodiac@output/dist/zodiac-pig.svg) |
 
 예시:
 
 ```md
 <!-- 연도와 상관없이 항상 호랑이를 표시 -->
-![tiger](https://raw.githubusercontent.com/MikeYC-Wang/3DPixelZodiac/output/dist/zodiac-tiger.svg)
+![tiger](https://cdn.jsdelivr.net/gh/MikeYC-Wang/3DPixelZodiac@output/dist/zodiac-tiger.svg)
 ```
 
 ## 3DPixelCalendar와의 관계

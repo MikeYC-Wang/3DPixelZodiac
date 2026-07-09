@@ -1,17 +1,17 @@
-# 🐉 3D Pixel Zodiac
+﻿# 🐉 3D Pixel Zodiac
 
 [English](README.en.md) | [日本語](README.ja.md) | [한국어](README.ko.md) | 繁體中文
 
 一張會自動判斷「今年生肖」並播放走路/拍翅/漂浮循環動畫的復古像素風 SVG，用純 SMIL（`<animate>` / `<animateTransform>`）驅動、完全不用 JavaScript，任何人都可以直接嵌入自己的 GitHub `README.md` 播放動畫。
 
-![preview](https://raw.githubusercontent.com/MikeYC-Wang/3DPixelZodiac/output/dist/zodiac.svg)
+![preview](https://cdn.jsdelivr.net/gh/MikeYC-Wang/3DPixelZodiac@output/dist/zodiac.svg)
 
 ## 快速嵌入
 
 複製下面的 Markdown 到你的 `README.md`（自動顯示「今年」的生肖，依農曆年份計算）：
 
 ```md
-![今年生肖](https://raw.githubusercontent.com/MikeYC-Wang/3DPixelZodiac/output/dist/zodiac.svg)
+![今年生肖](https://cdn.jsdelivr.net/gh/MikeYC-Wang/3DPixelZodiac@output/dist/zodiac.svg)
 ```
 
 ## 十二生肖圖鑑
@@ -19,29 +19,29 @@
 也可以指定任一生肖，不隨年份改變。網址格式：
 
 ```
-https://raw.githubusercontent.com/MikeYC-Wang/3DPixelZodiac/output/dist/zodiac-{animal}.svg
+https://cdn.jsdelivr.net/gh/MikeYC-Wang/3DPixelZodiac@output/dist/zodiac-{animal}.svg
 ```
 
 | 代碼 | 生肖 | 動畫 | 預覽 |
 | --- | --- | --- | --- |
-| `rat` | 鼠 | 走路 | ![rat](https://raw.githubusercontent.com/MikeYC-Wang/3DPixelZodiac/output/dist/zodiac-rat.svg) |
-| `ox` | 牛 | 走路 | ![ox](https://raw.githubusercontent.com/MikeYC-Wang/3DPixelZodiac/output/dist/zodiac-ox.svg) |
-| `tiger` | 虎 | 走路 | ![tiger](https://raw.githubusercontent.com/MikeYC-Wang/3DPixelZodiac/output/dist/zodiac-tiger.svg) |
-| `rabbit` | 兔 | 跳躍 | ![rabbit](https://raw.githubusercontent.com/MikeYC-Wang/3DPixelZodiac/output/dist/zodiac-rabbit.svg) |
-| `dragon` | 龍 | 漂浮 | ![dragon](https://raw.githubusercontent.com/MikeYC-Wang/3DPixelZodiac/output/dist/zodiac-dragon.svg) |
-| `snake` | 蛇 | 漂浮 | ![snake](https://raw.githubusercontent.com/MikeYC-Wang/3DPixelZodiac/output/dist/zodiac-snake.svg) |
-| `horse` | 馬 | 走路 | ![horse](https://raw.githubusercontent.com/MikeYC-Wang/3DPixelZodiac/output/dist/zodiac-horse.svg) |
-| `goat` | 羊 | 走路 | ![goat](https://raw.githubusercontent.com/MikeYC-Wang/3DPixelZodiac/output/dist/zodiac-goat.svg) |
-| `monkey` | 猴 | 走路 | ![monkey](https://raw.githubusercontent.com/MikeYC-Wang/3DPixelZodiac/output/dist/zodiac-monkey.svg) |
-| `rooster` | 雞 | 拍翅 | ![rooster](https://raw.githubusercontent.com/MikeYC-Wang/3DPixelZodiac/output/dist/zodiac-rooster.svg) |
-| `dog` | 狗 | 走路 | ![dog](https://raw.githubusercontent.com/MikeYC-Wang/3DPixelZodiac/output/dist/zodiac-dog.svg) |
-| `pig` | 豬 | 走路 | ![pig](https://raw.githubusercontent.com/MikeYC-Wang/3DPixelZodiac/output/dist/zodiac-pig.svg) |
+| `rat` | 鼠 | 走路 | ![rat](https://cdn.jsdelivr.net/gh/MikeYC-Wang/3DPixelZodiac@output/dist/zodiac-rat.svg) |
+| `ox` | 牛 | 走路 | ![ox](https://cdn.jsdelivr.net/gh/MikeYC-Wang/3DPixelZodiac@output/dist/zodiac-ox.svg) |
+| `tiger` | 虎 | 走路 | ![tiger](https://cdn.jsdelivr.net/gh/MikeYC-Wang/3DPixelZodiac@output/dist/zodiac-tiger.svg) |
+| `rabbit` | 兔 | 跳躍 | ![rabbit](https://cdn.jsdelivr.net/gh/MikeYC-Wang/3DPixelZodiac@output/dist/zodiac-rabbit.svg) |
+| `dragon` | 龍 | 漂浮 | ![dragon](https://cdn.jsdelivr.net/gh/MikeYC-Wang/3DPixelZodiac@output/dist/zodiac-dragon.svg) |
+| `snake` | 蛇 | 漂浮 | ![snake](https://cdn.jsdelivr.net/gh/MikeYC-Wang/3DPixelZodiac@output/dist/zodiac-snake.svg) |
+| `horse` | 馬 | 走路 | ![horse](https://cdn.jsdelivr.net/gh/MikeYC-Wang/3DPixelZodiac@output/dist/zodiac-horse.svg) |
+| `goat` | 羊 | 走路 | ![goat](https://cdn.jsdelivr.net/gh/MikeYC-Wang/3DPixelZodiac@output/dist/zodiac-goat.svg) |
+| `monkey` | 猴 | 走路 | ![monkey](https://cdn.jsdelivr.net/gh/MikeYC-Wang/3DPixelZodiac@output/dist/zodiac-monkey.svg) |
+| `rooster` | 雞 | 拍翅 | ![rooster](https://cdn.jsdelivr.net/gh/MikeYC-Wang/3DPixelZodiac@output/dist/zodiac-rooster.svg) |
+| `dog` | 狗 | 走路 | ![dog](https://cdn.jsdelivr.net/gh/MikeYC-Wang/3DPixelZodiac@output/dist/zodiac-dog.svg) |
+| `pig` | 豬 | 走路 | ![pig](https://cdn.jsdelivr.net/gh/MikeYC-Wang/3DPixelZodiac@output/dist/zodiac-pig.svg) |
 
 範例：
 
 ```md
 <!-- 固定顯示虎，不隨年份改變 -->
-![tiger](https://raw.githubusercontent.com/MikeYC-Wang/3DPixelZodiac/output/dist/zodiac-tiger.svg)
+![tiger](https://cdn.jsdelivr.net/gh/MikeYC-Wang/3DPixelZodiac@output/dist/zodiac-tiger.svg)
 ```
 
 ## 這跟 3DPixelCalendar 是什麼關係？

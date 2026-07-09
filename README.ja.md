@@ -1,17 +1,17 @@
-# 🐉 3D Pixel Zodiac
+﻿# 🐉 3D Pixel Zodiac
 
 [繁體中文](README.md) | [English](README.en.md) | 日本語 | [한국어](README.ko.md)
 
 「今年の干支」を自動判定し、歩行／羽ばたき／浮遊のループアニメーションを再生するレトロなピクセルアート SVG です。SMIL（`<animate>` / `<animateTransform>`）だけで動作し、JavaScript は一切使用していないため、GitHub の `README.md` に `<img>` として埋め込むだけでそのままアニメーションが再生されます。
 
-![preview](https://raw.githubusercontent.com/MikeYC-Wang/3DPixelZodiac/output/dist/zodiac.svg)
+![preview](https://cdn.jsdelivr.net/gh/MikeYC-Wang/3DPixelZodiac@output/dist/zodiac.svg)
 
 ## クイック埋め込み
 
 以下を `README.md` にコピーしてください（旧暦の年から自動計算された「今年の干支」が表示されます）：
 
 ```md
-![今年の干支](https://raw.githubusercontent.com/MikeYC-Wang/3DPixelZodiac/output/dist/zodiac.svg)
+![今年の干支](https://cdn.jsdelivr.net/gh/MikeYC-Wang/3DPixelZodiac@output/dist/zodiac.svg)
 ```
 
 ## ギャラリー（十二支すべて）
@@ -19,29 +19,29 @@
 年に関係なく特定の動物を固定表示することもできます。URL のパターン：
 
 ```
-https://raw.githubusercontent.com/MikeYC-Wang/3DPixelZodiac/output/dist/zodiac-{animal}.svg
+https://cdn.jsdelivr.net/gh/MikeYC-Wang/3DPixelZodiac@output/dist/zodiac-{animal}.svg
 ```
 
 | コード | 干支 | アニメーション | プレビュー |
 | --- | --- | --- | --- |
-| `rat` | 子（ネズミ） | 歩行 | ![rat](https://raw.githubusercontent.com/MikeYC-Wang/3DPixelZodiac/output/dist/zodiac-rat.svg) |
-| `ox` | 丑（ウシ） | 歩行 | ![ox](https://raw.githubusercontent.com/MikeYC-Wang/3DPixelZodiac/output/dist/zodiac-ox.svg) |
-| `tiger` | 寅（トラ） | 歩行 | ![tiger](https://raw.githubusercontent.com/MikeYC-Wang/3DPixelZodiac/output/dist/zodiac-tiger.svg) |
-| `rabbit` | 卯（ウサギ） | ジャンプ | ![rabbit](https://raw.githubusercontent.com/MikeYC-Wang/3DPixelZodiac/output/dist/zodiac-rabbit.svg) |
-| `dragon` | 辰（タツ） | 浮遊 | ![dragon](https://raw.githubusercontent.com/MikeYC-Wang/3DPixelZodiac/output/dist/zodiac-dragon.svg) |
-| `snake` | 巳（ヘビ） | 浮遊 | ![snake](https://raw.githubusercontent.com/MikeYC-Wang/3DPixelZodiac/output/dist/zodiac-snake.svg) |
-| `horse` | 午（ウマ） | 歩行 | ![horse](https://raw.githubusercontent.com/MikeYC-Wang/3DPixelZodiac/output/dist/zodiac-horse.svg) |
-| `goat` | 未（ヒツジ） | 歩行 | ![goat](https://raw.githubusercontent.com/MikeYC-Wang/3DPixelZodiac/output/dist/zodiac-goat.svg) |
-| `monkey` | 申（サル） | 歩行 | ![monkey](https://raw.githubusercontent.com/MikeYC-Wang/3DPixelZodiac/output/dist/zodiac-monkey.svg) |
-| `rooster` | 酉（トリ） | 羽ばたき | ![rooster](https://raw.githubusercontent.com/MikeYC-Wang/3DPixelZodiac/output/dist/zodiac-rooster.svg) |
-| `dog` | 戌（イヌ） | 歩行 | ![dog](https://raw.githubusercontent.com/MikeYC-Wang/3DPixelZodiac/output/dist/zodiac-dog.svg) |
-| `pig` | 亥（イノシシ） | 歩行 | ![pig](https://raw.githubusercontent.com/MikeYC-Wang/3DPixelZodiac/output/dist/zodiac-pig.svg) |
+| `rat` | 子（ネズミ） | 歩行 | ![rat](https://cdn.jsdelivr.net/gh/MikeYC-Wang/3DPixelZodiac@output/dist/zodiac-rat.svg) |
+| `ox` | 丑（ウシ） | 歩行 | ![ox](https://cdn.jsdelivr.net/gh/MikeYC-Wang/3DPixelZodiac@output/dist/zodiac-ox.svg) |
+| `tiger` | 寅（トラ） | 歩行 | ![tiger](https://cdn.jsdelivr.net/gh/MikeYC-Wang/3DPixelZodiac@output/dist/zodiac-tiger.svg) |
+| `rabbit` | 卯（ウサギ） | ジャンプ | ![rabbit](https://cdn.jsdelivr.net/gh/MikeYC-Wang/3DPixelZodiac@output/dist/zodiac-rabbit.svg) |
+| `dragon` | 辰（タツ） | 浮遊 | ![dragon](https://cdn.jsdelivr.net/gh/MikeYC-Wang/3DPixelZodiac@output/dist/zodiac-dragon.svg) |
+| `snake` | 巳（ヘビ） | 浮遊 | ![snake](https://cdn.jsdelivr.net/gh/MikeYC-Wang/3DPixelZodiac@output/dist/zodiac-snake.svg) |
+| `horse` | 午（ウマ） | 歩行 | ![horse](https://cdn.jsdelivr.net/gh/MikeYC-Wang/3DPixelZodiac@output/dist/zodiac-horse.svg) |
+| `goat` | 未（ヒツジ） | 歩行 | ![goat](https://cdn.jsdelivr.net/gh/MikeYC-Wang/3DPixelZodiac@output/dist/zodiac-goat.svg) |
+| `monkey` | 申（サル） | 歩行 | ![monkey](https://cdn.jsdelivr.net/gh/MikeYC-Wang/3DPixelZodiac@output/dist/zodiac-monkey.svg) |
+| `rooster` | 酉（トリ） | 羽ばたき | ![rooster](https://cdn.jsdelivr.net/gh/MikeYC-Wang/3DPixelZodiac@output/dist/zodiac-rooster.svg) |
+| `dog` | 戌（イヌ） | 歩行 | ![dog](https://cdn.jsdelivr.net/gh/MikeYC-Wang/3DPixelZodiac@output/dist/zodiac-dog.svg) |
+| `pig` | 亥（イノシシ） | 歩行 | ![pig](https://cdn.jsdelivr.net/gh/MikeYC-Wang/3DPixelZodiac@output/dist/zodiac-pig.svg) |
 
 例：
 
 ```md
 <!-- 年に関係なく常にトラを表示 -->
-![tiger](https://raw.githubusercontent.com/MikeYC-Wang/3DPixelZodiac/output/dist/zodiac-tiger.svg)
+![tiger](https://cdn.jsdelivr.net/gh/MikeYC-Wang/3DPixelZodiac@output/dist/zodiac-tiger.svg)
 ```
 
 ## 3DPixelCalendar との関係

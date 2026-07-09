@@ -438,29 +438,37 @@ function buildHorseBody(): Grid {
   const belly = "#e8c79a";
   const mane = "#3b2412";
 
-  // longer torso with a slightly slimmer belly than ox/dog to avoid a rodent-like silhouette
-  fillEllipse(grid, 14.3, 15.4, 9.2, 5.2, body);
-  fillEllipse(grid, 14.8, 18.2, 5.4, 2.8, belly);
+  // long lean trunk with clearer chest and hip mass, closer to a horse profile
+  fillEllipse(grid, 14, 15.2, 9.4, 5, body);
+  fillEllipse(grid, 15.1, 18, 4.9, 2.4, belly);
+  fillRect(grid, 18.7, 11.3, 4.4, 2.1, body); // chest bridge
 
-  // neck bridge into head
-  fillRect(grid, 19.2, 10.7, 4.8, 3.4, body);
+  // neck: slightly arched and taller so the head does not look pasted on
+  fillRect(grid, 18.6, 9.8, 2.3, 4.2, body);
+  fillRect(grid, 20, 8.8, 2.1, 4.3, body);
+  fillRect(grid, 21.2, 8, 1.6, 3.9, body);
 
-  // horse head: longer face / muzzle, not a compact round snout
-  fillEllipse(grid, 24, 11.4, 4.7, 4, body);
-  fillRect(grid, 27.7, 11.6, 3.4, 2.3, body);
-  fillRect(grid, 29, 13.6, 2.4, 1.2, belly);
-  setPixel(grid, 24.8, 10.3, "#141116");
-  setPixel(grid, 30.3, 13.8, "#3b2412");
+  // horse head: elongated skull + longer muzzle with clear jaw and nostril
+  fillEllipse(grid, 24.6, 11.1, 4.4, 3.7, body);
+  fillRect(grid, 27.7, 11.5, 3.8, 2.2, body);
+  fillRect(grid, 28.8, 13.5, 2.6, 1.2, belly);
+  setPixel(grid, 24.9, 10.2, "#141116");
+  setPixel(grid, 30.7, 13.2, mane);
 
-  // upright ears + a short forelock and neck mane
-  fillRect(grid, 21.6, 5.7, 1.3, 3.2, body);
-  fillRect(grid, 24.8, 5.6, 1.3, 3.1, body);
-  fillRect(grid, 20.1, 7, 2.6, 1.1, mane);
-  fillRect(grid, 18.5, 8.4, 1.5, 5.9, mane);
+  // ears: narrow upright horse ears with small pointed tips
+  fillRect(grid, 22.4, 5.7, 1, 2.9, body);
+  setPixel(grid, 22.8, 5.2, body);
+  fillRect(grid, 24.8, 5.6, 1, 3, body);
+  setPixel(grid, 25.2, 5.1, body);
 
-  // tail should be a short rear tail with a dark tuft, not a thin rat tail
-  fillRect(grid, 3.1, 12.6, 1.4, 5.2, mane);
-  fillEllipse(grid, 3.3, 18.6, 1.3, 1.8, mane);
+  // forelock + mane ridge from poll to shoulder
+  fillRect(grid, 21, 7.2, 1.8, 1, mane);
+  fillRect(grid, 19.6, 8.1, 1.5, 5.8, mane);
+  fillRect(grid, 18.9, 10.5, 1.1, 3.8, mane);
+
+  // tail: thicker root and compact dark tuft
+  fillRect(grid, 3.1, 12.4, 1.6, 4.5, mane);
+  fillEllipse(grid, 3.4, 17.5, 1.5, 2.1, mane);
 
   return grid;
 }
